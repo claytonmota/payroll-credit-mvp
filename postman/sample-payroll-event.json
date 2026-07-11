@@ -1,0 +1,10 @@
+{
+  "userId": "user-1001",
+  "employerName": "PortMiami Logistics LLC",
+  "payPeriodStart": "2026-06-01",
+  "payPeriodEnd": "2026-06-15",
+  "grossPay": 3200.00,
+  "netPay": 2450.00,
+  "payFrequency": "BIWEEKLY",
+  "sourceProvider": "Gusto"
+}

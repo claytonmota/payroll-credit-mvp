@@ -1,0 +1,30 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: decision-service
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: decision-service
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/decisions}
+    username: ${SPRING_DATASOURCE_USERNAME:credit_platform}
+    password: ${SPRING_DATASOURCE_PASSWORD:credit_platform}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+
+app:
+  kafka:
+    topic:
+      income-verified: income.verified
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

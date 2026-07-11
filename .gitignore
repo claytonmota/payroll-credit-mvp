@@ -1,0 +1,16 @@
+target/
+*.class
+.idea/
+.vscode/
+*.iml
+.DS_Store
+.terraform/
+*.tfstate
+*.tfstate.backup
+
+# C# / .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
