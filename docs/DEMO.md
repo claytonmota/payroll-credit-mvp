@@ -1,6 +1,18 @@
 # End-to-End Demo
 
-After `docker compose up --build`, run the following.
+This walkthrough works in two environments:
+
+- **Local development** — services running via `docker compose up --build`
+  on your machine. Endpoints are on `http://localhost:8081-8084`.
+- **AWS production deployment** — the same services already running on
+  AWS EC2 (us-east-1). Endpoints are on `http://54.158.206.186:8081-8084`.
+  No setup required — commands below work as-is against the public IP.
+
+All commands below use `localhost`. To test against the AWS deployment,
+substitute `localhost` with `54.158.206.186`.
+
+After `docker compose up --build` (local) or with no setup (AWS), run
+the following.
 
 ## 1. Send a series of payroll events for one user
 
