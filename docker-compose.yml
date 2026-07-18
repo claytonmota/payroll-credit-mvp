@@ -88,3 +88,22 @@ services:
       Mongo__CreditProfileCollection: credit_profiles
     ports:
       - "8084:8084"
+
+  caddy:
+    image: caddy:2-alpine
+    depends_on:
+      - ingestion-service
+      - income-verification-service
+      - decision-service
+      - credit-profile-service
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./infra/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

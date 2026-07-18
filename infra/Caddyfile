@@ -1,0 +1,23 @@
+{
+	email claytons.mota@gmail.com
+}
+
+payroll-credit.com, www.payroll-credit.com {
+	respond "Payroll-Integrated Real-Time Credit Infrastructure — MVP. Services: ingestion.payroll-credit.com, income.payroll-credit.com, decision.payroll-credit.com, creditprofile.payroll-credit.com" 200
+}
+
+ingestion.payroll-credit.com {
+	reverse_proxy ingestion-service:8081
+}
+
+income.payroll-credit.com {
+	reverse_proxy income-verification-service:8082
+}
+
+decision.payroll-credit.com {
+	reverse_proxy decision-service:8083
+}
+
+creditprofile.payroll-credit.com {
+	reverse_proxy credit-profile-service:8084
+}
