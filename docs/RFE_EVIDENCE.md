@@ -15,15 +15,16 @@ not through assertion, but through implementation.
 ## 1. Live deployment
 
 The MVP described below is deployed on Amazon Web Services (AWS EC2,
-region `us-east-1`) and is reachable from any browser or command-line
-HTTP client at the following public endpoints:
+region `us-east-1`) under a dedicated domain, `payroll-credit.com`, and
+is reachable from any browser or command-line HTTP client over HTTPS at
+the following public endpoints:
 
 | Service | Purpose | Public endpoint |
 |---|---|---|
-| ingestion-service | Receives payroll-provider events | `POST http://54.158.206.186:8081/v1/payroll/events` |
-| income-verification-service | Real-time income confidence scoring | `GET  http://54.158.206.186:8082/v1/income/verification/{userId}` |
-| decision-service | Rules-based eligibility engine | `GET  http://54.158.206.186:8083/v1/eligibility/{userId}` |
-| credit-profile-service | Aggregate credit profile (Java + C# interop) | `GET  http://54.158.206.186:8084/v1/credit-profile/{userId}` |
+| ingestion-service | Receives payroll-provider events | `POST https://ingestion.payroll-credit.com/v1/payroll/events` |
+| income-verification-service | Real-time income confidence scoring | `GET  https://income.payroll-credit.com/v1/income/verification/{userId}` |
+| decision-service | Rules-based eligibility engine | `GET  https://decision.payroll-credit.com/v1/eligibility/{userId}` |
+| credit-profile-service | Aggregate credit profile (Java + C# interop) | `GET  https://creditprofile.payroll-credit.com/v1/credit-profile/{userId}` |
 
 Complete step-by-step reproduction of the end-to-end flow is documented
 in [`docs/DEMO.md`](DEMO.md). Anyone can send a payroll event and observe
@@ -132,7 +133,7 @@ history) and `RICH_FILE` (high score plus stable income).
 ```bash
 # Send payroll events for a user whose ID ends in -thinfile
 # (deterministic stub simulates no bureau history)
-curl http://54.158.206.186:8084/v1/credit-profile/user-9999-thinfile
+curl https://creditprofile.payroll-credit.com/v1/credit-profile/user-9999-thinfile
 # Returns: "bureauScore": null, "thinFileClassification": "THIN_FILE"
 ```
 
@@ -235,7 +236,7 @@ minutes, without cloning the repository:
 
 ```bash
 # 1. Send a payroll event
-curl -X POST http://54.158.206.186:8081/v1/payroll/events \
+curl -X POST https://ingestion.payroll-credit.com/v1/payroll/events \
   -H "Content-Type: application/json" \
   -d '{"userId":"reviewer-001","employerName":"Reviewer Test","payPeriodStart":"2026-06-01","payPeriodEnd":"2026-06-15","grossPay":3200.00,"netPay":2450.00,"payFrequency":"BIWEEKLY","sourceProvider":"Gusto"}'
 
@@ -243,10 +244,10 @@ curl -X POST http://54.158.206.186:8081/v1/payroll/events \
 # Repeat step 1 three more times with different payPeriodStart/End
 
 # 3. Wait ~10 seconds and query the decision
-curl http://54.158.206.186:8083/v1/eligibility/reviewer-001
+curl https://decision.payroll-credit.com/v1/eligibility/reviewer-001
 
 # 4. Query the aggregate credit profile
-curl http://54.158.206.186:8084/v1/credit-profile/reviewer-001
+curl https://creditprofile.payroll-credit.com/v1/credit-profile/reviewer-001
 ```
 
 The complete response from step 3 should be a JSON object containing a

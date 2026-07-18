@@ -5,11 +5,21 @@ This walkthrough works in two environments:
 - **Local development** — services running via `docker compose up --build`
   on your machine. Endpoints are on `http://localhost:8081-8084`.
 - **AWS production deployment** — the same services already running on
-  AWS EC2 (us-east-1). Endpoints are on `http://54.158.206.186:8081-8084`.
-  No setup required — commands below work as-is against the public IP.
+  AWS EC2 (us-east-1), fronted by a Caddy reverse proxy with automatic
+  HTTPS. No setup required — reachable at:
 
-All commands below use `localhost`. To test against the AWS deployment,
-substitute `localhost` with `54.158.206.186`.
+  | Service | Production URL |
+  |---|---|
+  | ingestion-service | `https://ingestion.payroll-credit.com` |
+  | income-verification-service | `https://income.payroll-credit.com` |
+  | decision-service | `https://decision.payroll-credit.com` |
+  | credit-profile-service | `https://creditprofile.payroll-credit.com` |
+
+All commands below use `localhost` for local development. To test
+against the AWS deployment, replace `http://localhost:PORT` with the
+matching HTTPS subdomain from the table above — for example,
+`http://localhost:8081` becomes `https://ingestion.payroll-credit.com`
+(no port needed; the reverse proxy handles routing).
 
 After `docker compose up --build` (local) or with no setup (AWS), run
 the following.
