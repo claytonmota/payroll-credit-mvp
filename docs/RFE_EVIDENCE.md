@@ -167,6 +167,11 @@ The following are objective indicators, verifiable directly in the repo:
   documentation: a consuming institution could generate a client library and
   integrate without reading the source.
 - **Architecture Decision Records:** documented in this file (see §7)
+- **System architecture documentation:** [`docs/System_Architecture_Document.pdf`](System_Architecture_Document.pdf)
+  — a formal 27-page engineering document covering system context,
+  architectural principles, per-service specification, data model, API
+  reference, technology selection rationale, architecture decision records,
+  non-functional characteristics, and known gaps.
 
 ## 6. Prior work referenced in the Professional Plan
 
