@@ -26,6 +26,11 @@ the following public endpoints:
 | decision-service | Rules-based eligibility engine | `GET  https://decision.payroll-credit.com/v1/eligibility/{userId}` |
 | credit-profile-service | Aggregate credit profile (Java + C# interop) | `GET  https://creditprofile.payroll-credit.com/v1/credit-profile/{userId}` |
 
+Formal OpenAPI 3.0.3 specifications for all four services are available in
+[`docs/api/`](api/). They can be imported directly into Postman, Insomnia, or
+any OpenAPI viewer to explore and exercise the platform without cloning the
+repository.
+
 Complete step-by-step reproduction of the end-to-end flow is documented
 in [`docs/DEMO.md`](DEMO.md). Anyone can send a payroll event and observe
 it flow through Kafka, be persisted in PostgreSQL and MongoDB, and
@@ -150,6 +155,17 @@ The following are objective indicators, verifiable directly in the repo:
 - **Reproducible demo:** [`docs/DEMO.md`](DEMO.md) provides a full end-to-end script
 - **Open source license:** Apache 2.0 (see [`LICENSE`](../LICENSE))
 - **Contribution guidelines:** [`CONTRIBUTING.md`](../CONTRIBUTING.md)
+- **Formal API contracts:** OpenAPI 3.0.3 specifications for all four services
+  in [`docs/api/`](api/) — [ingestion](api/ingestion-service.openapi.yaml),
+  [income verification](api/income-verification-service.openapi.yaml),
+  [decision](api/decision-service.openapi.yaml),
+  [credit profile](api/credit-profile-service.openapi.yaml). Beyond request and
+  response shapes, these record the pay-frequency normalization multipliers,
+  the confidence-score threshold table, the ordered rules the eligibility
+  engine evaluates, the credit limit and APR sizing policy, and the thin-file
+  classification conditions. They are executable contracts rather than
+  documentation: a consuming institution could generate a client library and
+  integrate without reading the source.
 - **Architecture Decision Records:** documented in this file (see §7)
 
 ## 6. Prior work referenced in the Professional Plan
@@ -255,6 +271,10 @@ The complete response from step 3 should be a JSON object containing a
 a `suggestedApr`, and a `reasoning` field with the human-readable
 justification for the decision. This is the endeavor's end-to-end
 technical claim, made observable in a single command.
+
+Reviewers who prefer a graphical client can import the four specifications
+from [`docs/api/`](api/) into Postman or Insomnia instead, which generates a
+complete request collection with example bodies already filled in.
 
 ---
 
