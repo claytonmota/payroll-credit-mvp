@@ -1,0 +1,289 @@
+openapi: 3.0.3
+
+info:
+  title: Payroll Credit Platform — Ingestion Service
+  version: "1.0.0"
+  summary: Entry point for normalized payroll events.
+  description: |
+    The Ingestion Service is the write edge of the Payroll-Integrated Real-Time
+    Credit Infrastructure. It accepts normalized payroll events from payroll
+    providers, validates their structure, and publishes them to the
+    `payroll.events` Kafka topic for downstream processing.
+
+    The service is stateless: it owns no database. Acceptance of an event
+    means the event was successfully published to Kafka, not that a credit
+    decision has been produced. Decisions materialize asynchronously and are
+    read from the Decision Service.
+
+    In this prototype the endpoint accepts an already-normalized event. In a
+    production deployment this layer would additionally host per-provider
+    connector adapters (ADP, Workday, Paychex, Gusto, Rippling), an SFTP batch
+    processor, and a webhook receiver, each responsible for producing this same
+    canonical shape.
+  contact:
+    name: Clayton Soares da Mota
+    url: https://github.com/claytonmota/payroll-credit-mvp
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+
+servers:
+  - url: https://ingestion.payroll-credit.com
+    description: Public deployment (AWS EC2, us-east-1)
+  - url: http://localhost:8081
+    description: Local Docker Compose stack
+
+tags:
+  - name: Payroll Events
+    description: Submission of payroll events into the platform.
+  - name: Operations
+    description: Health and liveness.
+
+paths:
+  /v1/payroll/events:
+    post:
+      tags: [Payroll Events]
+      operationId: submitPayrollEvent
+      summary: Submit a normalized payroll event
+      description: |
+        Accepts a single payroll event describing one pay period for one
+        worker, and publishes it to the `payroll.events` Kafka topic.
+
+        The response is returned as soon as the Kafka producer acknowledges
+        the write. Downstream services — income verification, eligibility
+        decisioning, credit profile aggregation — consume the event
+        asynchronously, typically within a few hundred milliseconds.
+
+        Events are additive. Submitting several events for the same `userId`
+        builds the pay history that the income confidence score is computed
+        from. At least two events are required before a stability label other
+        than `INSUFFICIENT_DATA` can be produced, and at least three before
+        the rules engine will return a decision other than `REVIEW`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayrollEvent'
+            examples:
+              stableBiweekly:
+                summary: Stable biweekly earner
+                description: |
+                  Four events of this shape, differing only in pay period,
+                  produce a confidence score of 1.0 and a STABLE label.
+                value:
+                  userId: user-1001
+                  employerName: PortMiami Logistics LLC
+                  payPeriodStart: "2026-06-01"
+                  payPeriodEnd: "2026-06-15"
+                  grossPay: 3200.00
+                  netPay: 2450.00
+                  payFrequency: BIWEEKLY
+                  sourceProvider: Gusto
+              volatileGig:
+                summary: Volatile gig worker
+                description: |
+                  Monthly earnings that swing widely between periods produce a
+                  low confidence score and a VOLATILE label.
+                value:
+                  userId: user-2002
+                  employerName: Gig Aggregator
+                  payPeriodStart: "2026-01-01"
+                  payPeriodEnd: "2026-01-31"
+                  grossPay: 8000.00
+                  netPay: 8000.00
+                  payFrequency: MONTHLY
+                  sourceProvider: Rippling
+              thinFile:
+                summary: Worker with no credit bureau history
+                description: |
+                  A `userId` ending in `-thinfile` causes the deterministic
+                  bureau stub in the Credit Profile Service to return no
+                  history, exercising the THIN_FILE classification path.
+                value:
+                  userId: user-9999-thinfile
+                  employerName: Immigrant Worker Co
+                  payPeriodStart: "2026-06-01"
+                  payPeriodEnd: "2026-06-15"
+                  grossPay: 2800.00
+                  netPay: 2200.00
+                  payFrequency: BIWEEKLY
+                  sourceProvider: Rippling
+      responses:
+        '202':
+          description: |
+            Event accepted and published to Kafka. Downstream results will
+            become queryable shortly.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventAccepted'
+              example:
+                status: accepted
+                userId: user-1001
+                message: Payroll event queued for income verification
+        '400':
+          description: |
+            Malformed request body — invalid JSON, missing required field, or
+            a value that fails type conversion (for example a pay period date
+            that is not ISO-8601).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+              example:
+                timestamp: "2026-07-14T01:38:59.989+00:00"
+                status: 400
+                error: Bad Request
+                path: /v1/payroll/events
+        '500':
+          description: |
+            The event could not be published — typically because the Kafka
+            broker is unreachable. The caller should retry.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /v1/payroll/health:
+    get:
+      tags: [Operations]
+      operationId: getIngestionHealth
+      summary: Service health
+      description: Liveness probe. Returns 200 whenever the service is running.
+      responses:
+        '200':
+          description: Service is up.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+              example:
+                service: ingestion-service
+                status: UP
+
+components:
+  schemas:
+
+    PayrollEvent:
+      type: object
+      description: |
+        The canonical payroll event contract. This same JSON shape is what
+        travels on the `payroll.events` Kafka topic; the topic payload is the
+        contract between services, independent of any producing language or
+        class name (see ADR-001 in the System Architecture Document).
+      required:
+        - userId
+        - payPeriodStart
+        - payPeriodEnd
+        - grossPay
+        - netPay
+      properties:
+        userId:
+          type: string
+          description: |
+            Stable identifier for the worker, assigned by the calling system.
+            All downstream aggregation keys on this value.
+          example: user-1001
+          maxLength: 128
+        employerName:
+          type: string
+          description: Employer of record for this pay period.
+          example: PortMiami Logistics LLC
+        payPeriodStart:
+          type: string
+          format: date
+          description: First day of the pay period (ISO-8601, `YYYY-MM-DD`).
+          example: "2026-06-01"
+        payPeriodEnd:
+          type: string
+          format: date
+          description: Last day of the pay period (ISO-8601, `YYYY-MM-DD`).
+          example: "2026-06-15"
+        grossPay:
+          type: number
+          format: double
+          description: Gross earnings for the period, in USD, before deductions.
+          example: 3200.00
+          minimum: 0
+        netPay:
+          type: number
+          format: double
+          description: |
+            Net earnings for the period, in USD, after deductions. This is the
+            figure the income confidence score is computed from, since it
+            reflects actual disposable income.
+          example: 2450.00
+          minimum: 0
+        payFrequency:
+          $ref: '#/components/schemas/PayFrequency'
+        sourceProvider:
+          type: string
+          description: |
+            Payroll provider that originated the record. Free text; used for
+            data-lineage attribution rather than for logic.
+          example: Gusto
+
+    PayFrequency:
+      type: string
+      description: |
+        Cadence of the pay cycle. Determines the multiplier used to normalize
+        this period's net pay to a monthly-equivalent figure before the
+        coefficient of variation is computed:
+
+        | Value | Monthly multiplier |
+        |---|---|
+        | `WEEKLY` | 4.33 |
+        | `BIWEEKLY` | 2.166 |
+        | `SEMIMONTHLY` | 2.0 |
+        | `MONTHLY` | 1.0 |
+      enum:
+        - WEEKLY
+        - BIWEEKLY
+        - SEMIMONTHLY
+        - MONTHLY
+      example: BIWEEKLY
+
+    EventAccepted:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Always `accepted` on success.
+          example: accepted
+        userId:
+          type: string
+          description: Echo of the submitted user identifier.
+          example: user-1001
+        message:
+          type: string
+          example: Payroll event queued for income verification
+
+    Health:
+      type: object
+      properties:
+        service:
+          type: string
+          example: ingestion-service
+        status:
+          type: string
+          enum: [UP, DOWN]
+          example: UP
+
+    ValidationError:
+      type: object
+      description: Standard Spring Boot error envelope.
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-07-14T01:38:59.989+00:00"
+        status:
+          type: integer
+          example: 400
+        error:
+          type: string
+          example: Bad Request
+        path:
+          type: string
+          example: /v1/payroll/events

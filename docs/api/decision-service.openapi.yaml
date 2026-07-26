@@ -1,0 +1,339 @@
+openapi: 3.0.3
+
+info:
+  title: Payroll Credit Platform — Decision Service
+  version: "1.0.0"
+  summary: Deterministic, auditable credit eligibility decisioning.
+  description: |
+    The Decision Service consumes income verification results and applies a
+    rules engine to produce an eligibility decision, a credit limit, and a
+    suggested APR.
+
+    ### Why rules and not a model
+
+    The engine is deterministic and rule-based. It uses no machine learning in
+    the decision path. This is a deliberate architectural decision (ADR-002 in
+    the System Architecture Document), taken to satisfy two regulatory
+    constraints:
+
+    - **CFPB adverse action reporting** under Regulation B requires that a
+      consumer denied credit receive a specific principal reason. Every
+      decision produced here carries a `reasoning` field written in plain
+      language, directly consumable for that purpose.
+    - **Basel II model risk management** requires model outputs to be
+      independently reproducible. A deterministic engine satisfies this by
+      construction.
+
+    The trade-off — potentially lower predictive accuracy than an equivalent
+    trained classifier — is accepted knowingly.
+
+    ### Audit trail
+
+    Decisions are persisted to an append-only table. A decision is never
+    updated in place; a changed assessment inserts a new record with a new
+    identifier. The full history for any worker is retrievable, which allows
+    the state of the platform to be reconstructed at any past point in time.
+  contact:
+    name: Clayton Soares da Mota
+    url: https://github.com/claytonmota/payroll-credit-mvp
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+
+servers:
+  - url: https://decision.payroll-credit.com
+    description: Public deployment (AWS EC2, us-east-1)
+  - url: http://localhost:8083
+    description: Local Docker Compose stack
+
+tags:
+  - name: Eligibility
+    description: Current decisions and full audit history.
+  - name: Operations
+    description: Health and liveness.
+
+paths:
+  /v1/eligibility/{userId}:
+    get:
+      tags: [Eligibility]
+      operationId: getEligibilityDecision
+      summary: Retrieve the most recent eligibility decision
+      description: |
+        Returns the latest decision on record for this worker.
+
+        Returns `404` if no decision has been produced yet. Because the
+        pipeline is asynchronous, a `404` immediately after submitting payroll
+        events is expected and transient.
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Most recent eligibility decision.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EligibilityDecision'
+              examples:
+                approved:
+                  summary: Approved — stable income, high confidence
+                  value:
+                    decisionId: 3f2c9a41-8e17-4d5b-9c2a-7b1e40f3d8aa
+                    userId: user-1001
+                    decision: APPROVED
+                    creditLimitUsd: 1592.01
+                    suggestedApr: 18.99
+                    averageMonthlyIncome: 5306.70
+                    incomeConfidenceScore: 1.0
+                    incomeStabilityLabel: STABLE
+                    reasoning: >-
+                      Stable income stream with high confidence score (1.00).
+                      Average monthly income of USD 5306.70 meets the minimum
+                      threshold. Credit limit set at 30% of average monthly
+                      income.
+                    decidedAt: "2026-07-13T23:03:58.412009Z"
+                review:
+                  summary: Review — moderate confidence
+                  value:
+                    decisionId: 7a1b3c92-4f88-4e02-b6d1-2c9f5a7e13bb
+                    userId: user-2002
+                    decision: REVIEW
+                    creditLimitUsd: 428.33
+                    suggestedApr: 24.99
+                    averageMonthlyIncome: 4283.33
+                    incomeConfidenceScore: 0.61
+                    incomeStabilityLabel: MODERATE
+                    reasoning: >-
+                      Income confidence score of 0.61 falls below the automatic
+                      approval threshold of 0.75. Referred for manual review
+                      with a conservative preliminary limit of 10% of average
+                      monthly income.
+                    decidedAt: "2026-07-13T23:04:12.338771Z"
+                denied:
+                  summary: Denied — income below minimum threshold
+                  value:
+                    decisionId: c40e77d1-9b22-4a3f-8e51-6d0a2f8c94cc
+                    userId: user-4004
+                    decision: DENIED
+                    creditLimitUsd: 0.0
+                    suggestedApr: 0.0
+                    averageMonthlyIncome: 1420.00
+                    incomeConfidenceScore: 0.92
+                    incomeStabilityLabel: STABLE
+                    reasoning: >-
+                      Average monthly income of USD 1420.00 is below the
+                      minimum threshold of USD 1800.00 required for any credit
+                      product.
+                    decidedAt: "2026-07-13T23:06:44.771203Z"
+        '404':
+          description: No decision has been produced for this worker yet.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+              example:
+                message: No eligibility decision yet for userId=user-1001
+                error: not_found
+
+  /v1/eligibility/{userId}/history:
+    get:
+      tags: [Eligibility]
+      operationId: getEligibilityHistory
+      summary: Retrieve the complete decision history for a worker
+      description: |
+        Returns every decision ever recorded for this worker, ordered by
+        `decidedAt` descending.
+
+        This endpoint exposes the immutable audit trail. Because the
+        underlying table is append-only, the sequence returned here is the
+        complete and unaltered record of how the platform's assessment of this
+        worker evolved as payroll data accumulated.
+
+        Returns an empty array — not `404` — when no decisions exist.
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: |
+            Full decision history, newest first. Empty array if none exist.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EligibilityDecision'
+              examples:
+                progression:
+                  summary: Assessment strengthening as pay history accumulates
+                  value:
+                    - decisionId: 3f2c9a41-8e17-4d5b-9c2a-7b1e40f3d8aa
+                      userId: user-1001
+                      decision: APPROVED
+                      creditLimitUsd: 1592.01
+                      suggestedApr: 18.99
+                      averageMonthlyIncome: 5306.70
+                      incomeConfidenceScore: 1.0
+                      incomeStabilityLabel: STABLE
+                      reasoning: >-
+                        Stable income stream with high confidence score (1.00).
+                      decidedAt: "2026-07-13T23:03:58.412009Z"
+                    - decisionId: 91d4e0b7-2a65-4c19-a730-5f8b1c6d02ee
+                      userId: user-1001
+                      decision: REVIEW
+                      creditLimitUsd: 530.67
+                      suggestedApr: 24.99
+                      averageMonthlyIncome: 5306.70
+                      incomeConfidenceScore: 0.4
+                      incomeStabilityLabel: INSUFFICIENT_DATA
+                      reasoning: >-
+                        Only 1 pay event on record; a minimum of 3 is required
+                        for an automated approval. Referred for manual review.
+                      decidedAt: "2026-07-13T23:03:56.118440Z"
+                empty:
+                  summary: No decisions on record
+                  value: []
+
+  /v1/eligibility/health:
+    get:
+      tags: [Operations]
+      operationId: getDecisionHealth
+      summary: Service health
+      description: Liveness probe. Returns 200 whenever the service is running.
+      responses:
+        '200':
+          description: Service is up.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+              example:
+                service: decision-service
+                status: UP
+
+components:
+
+  parameters:
+    UserId:
+      name: userId
+      in: path
+      required: true
+      description: Worker identifier, as submitted to the Ingestion Service.
+      schema:
+        type: string
+        maxLength: 128
+      example: user-1001
+
+  schemas:
+
+    EligibilityDecision:
+      type: object
+      description: |
+        An immutable audit record of one eligibility decision. Persisted to
+        the append-only `eligibility_decision` table together with the input
+        signals that produced it, so that any decision can be re-derived and
+        independently verified after the fact.
+      properties:
+        decisionId:
+          type: string
+          format: uuid
+          description: Unique identifier for this decision record.
+          example: 3f2c9a41-8e17-4d5b-9c2a-7b1e40f3d8aa
+        userId:
+          type: string
+          example: user-1001
+        decision:
+          $ref: '#/components/schemas/Decision'
+        creditLimitUsd:
+          type: number
+          format: double
+          minimum: 0
+          description: |
+            Recommended credit limit in USD. Sized at 30% of average monthly
+            income for approvals, 10% for referrals, and 0 for denials.
+          example: 1592.01
+        suggestedApr:
+          type: number
+          format: double
+          minimum: 0
+          description: |
+            Recommended annual percentage rate. 18.99 for stable approvals,
+            22.99 for moderate approvals, 24.99 for referrals, 0 for denials.
+          example: 18.99
+        averageMonthlyIncome:
+          type: number
+          format: double
+          description: Input signal — mean monthly-equivalent net pay, in USD.
+          example: 5306.70
+        incomeConfidenceScore:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 1
+          description: Input signal — income confidence score at decision time.
+          example: 1.0
+        incomeStabilityLabel:
+          $ref: '#/components/schemas/IncomeStabilityLabel'
+        reasoning:
+          type: string
+          maxLength: 2000
+          description: |
+            Plain-language justification naming the specific rules that fired.
+            This field exists to satisfy adverse action notice requirements
+            under Regulation B, and is written to be readable by the affected
+            consumer rather than only by an engineer.
+          example: >-
+            Stable income stream with high confidence score (1.00). Average
+            monthly income of USD 5306.70 meets the minimum threshold.
+        decidedAt:
+          type: string
+          format: date-time
+          description: When this decision was produced (UTC).
+          example: "2026-07-13T23:03:58.412009Z"
+
+    Decision:
+      type: string
+      description: |
+        Outcome of the rules engine. Rules are evaluated in order and
+        evaluation stops at the first match:
+
+        | Order | Condition | Outcome |
+        |---|---|---|
+        | 1 | Fewer than 3 pay events on record | `REVIEW` |
+        | 2 | Average monthly income below USD 1,800 | `DENIED` |
+        | 3 | Confidence ≥ 0.75 and label `STABLE` | `APPROVED` |
+        | 4 | Confidence ≥ 0.50 | `REVIEW` |
+        | 5 | Otherwise | `DENIED` |
+      enum:
+        - APPROVED
+        - REVIEW
+        - DENIED
+      example: APPROVED
+
+    IncomeStabilityLabel:
+      type: string
+      enum:
+        - STABLE
+        - MODERATE
+        - VOLATILE
+        - INSUFFICIENT_DATA
+      example: STABLE
+
+    Health:
+      type: object
+      properties:
+        service:
+          type: string
+          example: decision-service
+        status:
+          type: string
+          enum: [UP, DOWN]
+          example: UP
+
+    NotFound:
+      type: object
+      properties:
+        message:
+          type: string
+          example: No eligibility decision yet for userId=user-1001
+        error:
+          type: string
+          example: not_found

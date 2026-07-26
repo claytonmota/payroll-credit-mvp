@@ -1,0 +1,326 @@
+openapi: 3.0.3
+
+info:
+  title: Payroll Credit Platform — Credit Profile Service
+  version: "1.0.0"
+  summary: Aggregate credit profile combining payroll income and bureau data.
+  description: |
+    The Credit Profile Service aggregates real-time income signals with a
+    credit bureau lookup into a single document per worker, and classifies the
+    resulting file as `THIN_FILE`, `STANDARD`, or `RICH_FILE`.
+
+    ### Cross-language demonstration
+
+    This service is written in **C# on .NET 8**, while the other three services
+    in the platform are Java on Spring Boot. It consumes the same
+    `income.verified` Kafka topic as the Java-based Decision Service, in an
+    independent consumer group, with no shared library and no code generation
+    between them.
+
+    That interoperability is not incidental — it is the practical consequence
+    of ADR-001, which requires every producer to omit language-specific type
+    headers so that the event schema alone constitutes the contract. A future
+    service in Python, Go, or Rust could join the same topics unchanged.
+
+    ### Financial inclusion
+
+    The `THIN_FILE` classification is the point of the platform. A worker with
+    payroll-verified, stable income but no credit bureau history is
+    identifiable as a distinct population — creditworthy on the evidence
+    available, invisible to conventional underwriting. Roughly 26 million
+    American adults fall into this category according to the Consumer
+    Financial Protection Bureau, with a further 19 million holding unscored
+    files.
+
+    ### Bureau lookup
+
+    In this prototype the bureau lookup is a deterministic in-process stub
+    that derives reproducible results from a hash of the `userId`. Any
+    `userId` ending in `-thinfile` deterministically returns no bureau
+    history, so the thin-file path can be demonstrated on demand. A production
+    adapter would substitute an HTTP client against an Experian, Equifax, or
+    TransUnion sandbox, which would add material and variable latency to this
+    service's processing path.
+  contact:
+    name: Clayton Soares da Mota
+    url: https://github.com/claytonmota/payroll-credit-mvp
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+
+servers:
+  - url: https://creditprofile.payroll-credit.com
+    description: Public deployment (AWS EC2, us-east-1)
+  - url: http://localhost:8084
+    description: Local Docker Compose stack
+
+tags:
+  - name: Credit Profile
+    description: Aggregate profiles combining income and bureau signals.
+  - name: Operations
+    description: Health and liveness.
+
+paths:
+  /v1/credit-profile/{userId}:
+    get:
+      tags: [Credit Profile]
+      operationId: getCreditProfile
+      summary: Retrieve the aggregate credit profile for a worker
+      description: |
+        Returns the aggregate profile document, including the current income
+        assessment, the bureau lookup result, the thin-file classification,
+        and the full sequence of income snapshots observed over time.
+
+        Returns `404` if no income verification event has been consumed for
+        this worker yet.
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Aggregate credit profile.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditProfile'
+              examples:
+                standard:
+                  summary: Standard file — income plus bureau history
+                  value:
+                    userId: user-1001
+                    averageMonthlyIncome: 5306.70
+                    incomeConfidenceScore: 1.0
+                    incomeStabilityLabel: STABLE
+                    payEventsConsidered: 4
+                    bureauScore: 598
+                    bureauSource: Experian
+                    thinFileClassification: STANDARD
+                    incomeHistory:
+                      - averageMonthlyIncome: 5306.70
+                        incomeConfidenceScore: 0.4
+                        incomeStabilityLabel: INSUFFICIENT_DATA
+                        payEventsConsidered: 1
+                        observedAt: "2026-07-13T22:54:52.828Z"
+                      - averageMonthlyIncome: 5306.70
+                        incomeConfidenceScore: 1.0
+                        incomeStabilityLabel: STABLE
+                        payEventsConsidered: 4
+                        observedAt: "2026-07-13T22:54:53.096Z"
+                    lastUpdated: "2026-07-13T23:03:58.403Z"
+                    createdAt: "2026-07-13T22:54:53.017Z"
+                thinFile:
+                  summary: Thin file — verified income, no bureau history
+                  description: |
+                    The financial inclusion case. Income is verified and
+                    stable, but the bureau returns nothing. Conventional
+                    underwriting would decline this worker for lack of data;
+                    this platform can assess them on payroll evidence.
+                  value:
+                    userId: user-9999-thinfile
+                    averageMonthlyIncome: 4766.00
+                    incomeConfidenceScore: 1.0
+                    incomeStabilityLabel: STABLE
+                    payEventsConsidered: 4
+                    bureauScore: null
+                    bureauSource: null
+                    thinFileClassification: THIN_FILE
+                    incomeHistory:
+                      - averageMonthlyIncome: 4766.00
+                        incomeConfidenceScore: 1.0
+                        incomeStabilityLabel: STABLE
+                        payEventsConsidered: 4
+                        observedAt: "2026-07-13T23:10:11.402Z"
+                    lastUpdated: "2026-07-13T23:10:11.418Z"
+                    createdAt: "2026-07-13T23:10:09.771Z"
+                richFile:
+                  summary: Rich file — strong bureau score and stable income
+                  value:
+                    userId: user-5005
+                    averageMonthlyIncome: 8912.40
+                    incomeConfidenceScore: 0.96
+                    incomeStabilityLabel: STABLE
+                    payEventsConsidered: 8
+                    bureauScore: 764
+                    bureauSource: TransUnion
+                    thinFileClassification: RICH_FILE
+                    incomeHistory: []
+                    lastUpdated: "2026-07-13T23:12:40.887Z"
+                    createdAt: "2026-07-13T23:12:38.221Z"
+        '404':
+          description: No profile exists for this worker yet.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+              example:
+                error: not_found
+                message: No credit profile yet for userId=user-1001
+
+  /v1/credit-profile/health:
+    get:
+      tags: [Operations]
+      operationId: getProfileHealth
+      summary: Service health
+      description: Liveness probe. Returns 200 whenever the service is running.
+      responses:
+        '200':
+          description: Service is up.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+              example:
+                service: credit-profile-service
+                status: UP
+
+components:
+
+  parameters:
+    UserId:
+      name: userId
+      in: path
+      required: true
+      description: |
+        Worker identifier, as submitted to the Ingestion Service. Identifiers
+        ending in `-thinfile` deterministically produce a thin-file result
+        from the bureau stub.
+      schema:
+        type: string
+        maxLength: 128
+      example: user-1001
+
+  schemas:
+
+    CreditProfile:
+      type: object
+      description: |
+        Aggregate profile document, stored in MongoDB. A document store was
+        chosen here rather than a relational table because the profile
+        combines heterogeneous signals whose shape is expected to change as
+        new data categories are introduced — bank cash flow, rent reporting,
+        employment tenure — without requiring schema migration.
+      properties:
+        userId:
+          type: string
+          example: user-1001
+        averageMonthlyIncome:
+          type: number
+          format: double
+          description: Current mean monthly-equivalent net pay, in USD.
+          example: 5306.70
+        incomeConfidenceScore:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 1
+          example: 1.0
+        incomeStabilityLabel:
+          $ref: '#/components/schemas/IncomeStabilityLabel'
+        payEventsConsidered:
+          type: integer
+          minimum: 0
+          example: 4
+        bureauScore:
+          type: integer
+          nullable: true
+          minimum: 300
+          maximum: 850
+          description: |
+            Credit bureau score, or `null` when the bureau holds no file for
+            this worker. A null score is the defining condition of the
+            thin-file case.
+          example: 598
+        bureauSource:
+          type: string
+          nullable: true
+          description: |
+            Bureau that returned the score, or `null` when no file exists.
+          example: Experian
+        thinFileClassification:
+          $ref: '#/components/schemas/ThinFileClassification'
+        incomeHistory:
+          type: array
+          description: |
+            Time-ordered snapshots of the income assessment, appended on every
+            `income.verified` event consumed. Shows how confidence in the
+            worker's income strengthened as pay history accumulated.
+          items:
+            $ref: '#/components/schemas/IncomeSnapshot'
+        lastUpdated:
+          type: string
+          format: date-time
+          example: "2026-07-13T23:03:58.403Z"
+        createdAt:
+          type: string
+          format: date-time
+          description: When this profile was first created.
+          example: "2026-07-13T22:54:53.017Z"
+
+    IncomeSnapshot:
+      type: object
+      description: One historical observation of a worker's income assessment.
+      properties:
+        averageMonthlyIncome:
+          type: number
+          format: double
+          example: 5306.70
+        incomeConfidenceScore:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 1
+          example: 1.0
+        incomeStabilityLabel:
+          $ref: '#/components/schemas/IncomeStabilityLabel'
+        payEventsConsidered:
+          type: integer
+          example: 4
+        observedAt:
+          type: string
+          format: date-time
+          example: "2026-07-13T22:54:53.096Z"
+
+    ThinFileClassification:
+      type: string
+      description: |
+        Segmentation of the worker's credit file:
+
+        | Value | Condition |
+        |---|---|
+        | `THIN_FILE` | Bureau returned no history |
+        | `RICH_FILE` | Bureau score ≥ 720 and income label `STABLE` |
+        | `STANDARD` | Everything else |
+      enum:
+        - THIN_FILE
+        - STANDARD
+        - RICH_FILE
+      example: STANDARD
+
+    IncomeStabilityLabel:
+      type: string
+      enum:
+        - STABLE
+        - MODERATE
+        - VOLATILE
+        - INSUFFICIENT_DATA
+      example: STABLE
+
+    Health:
+      type: object
+      properties:
+        service:
+          type: string
+          example: credit-profile-service
+        status:
+          type: string
+          enum: [UP, DOWN]
+          example: UP
+
+    NotFound:
+      type: object
+      properties:
+        error:
+          type: string
+          example: not_found
+        message:
+          type: string
+          example: No credit profile yet for userId=user-1001

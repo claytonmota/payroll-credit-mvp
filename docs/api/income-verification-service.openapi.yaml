@@ -1,0 +1,227 @@
+openapi: 3.0.3
+
+info:
+  title: Payroll Credit Platform — Income Verification Service
+  version: "1.0.0"
+  summary: Real-time income confidence scoring derived from payroll history.
+  description: |
+    The Income Verification Service consumes payroll events, persists them for
+    historical analysis, and computes an **income confidence score** across a
+    rolling window of up to twelve pay periods per worker.
+
+    This score is the platform's substitute for static credit history, and is
+    the central technical claim of the endeavour: a worker with no credit
+    bureau file but a stable payroll stream receives a legitimate positive
+    signal, while a worker with high but erratic earnings is flagged as
+    volatile.
+
+    ### Scoring method
+
+    1. Each event's net pay is normalized to a monthly-equivalent value using
+       the pay frequency multiplier.
+    2. The coefficient of variation — standard deviation divided by mean — is
+       computed across the last N events, where N is capped at 12.
+    3. The score is `1 − coefficient of variation`, clamped to `[0, 1]`.
+       Perfectly stable income yields `1.0`.
+    4. A stability label is derived from thresholds on the score.
+
+    The method is deterministic and unit-tested. It uses no machine learning,
+    which keeps the output independently reproducible — a requirement for
+    Basel II model risk management.
+
+    Results are published to the `income.verified` Kafka topic, where they are
+    consumed independently by the Decision Service and the Credit Profile
+    Service.
+  contact:
+    name: Clayton Soares da Mota
+    url: https://github.com/claytonmota/payroll-credit-mvp
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+
+servers:
+  - url: https://income.payroll-credit.com
+    description: Public deployment (AWS EC2, us-east-1)
+  - url: http://localhost:8082
+    description: Local Docker Compose stack
+
+tags:
+  - name: Income Verification
+    description: Query computed income assessments.
+  - name: Operations
+    description: Health and liveness.
+
+paths:
+  /v1/income/verification/{userId}:
+    get:
+      tags: [Income Verification]
+      operationId: getIncomeVerification
+      summary: Retrieve the current income assessment for a worker
+      description: |
+        Returns the latest computed income verification result. The result is
+        recomputed on every incoming payroll event, so this endpoint always
+        reflects the complete history known to the platform.
+
+        Returns `404` if no payroll event has yet been processed for this
+        worker. Because ingestion is asynchronous, a `404` immediately after
+        submitting an event is expected and transient — poll briefly.
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Current income assessment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IncomeVerificationResult'
+              examples:
+                stable:
+                  summary: Stable earner, full confidence
+                  value:
+                    userId: user-1001
+                    averageMonthlyIncome: 5306.70
+                    incomeConfidenceScore: 1.0
+                    incomeStabilityLabel: STABLE
+                    payEventsConsidered: 4
+                    lastUpdated: "2026-07-13T23:03:58.387384Z"
+                volatile:
+                  summary: Gig worker with erratic earnings
+                  value:
+                    userId: user-2002
+                    averageMonthlyIncome: 4283.33
+                    incomeConfidenceScore: 0.19
+                    incomeStabilityLabel: VOLATILE
+                    payEventsConsidered: 6
+                    lastUpdated: "2026-07-13T23:04:12.114882Z"
+                insufficient:
+                  summary: Only one event received so far
+                  value:
+                    userId: user-3003
+                    averageMonthlyIncome: 5306.70
+                    incomeConfidenceScore: 0.4
+                    incomeStabilityLabel: INSUFFICIENT_DATA
+                    payEventsConsidered: 1
+                    lastUpdated: "2026-07-13T23:05:01.002451Z"
+        '404':
+          description: No payroll event has been processed for this worker yet.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+              example:
+                message: No income verification result yet for userId=user-1001
+                error: not_found
+
+  /v1/income/health:
+    get:
+      tags: [Operations]
+      operationId: getIncomeHealth
+      summary: Service health
+      description: Liveness probe. Returns 200 whenever the service is running.
+      responses:
+        '200':
+          description: Service is up.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+              example:
+                service: income-verification-service
+                status: UP
+
+components:
+
+  parameters:
+    UserId:
+      name: userId
+      in: path
+      required: true
+      description: Worker identifier, as submitted to the Ingestion Service.
+      schema:
+        type: string
+        maxLength: 128
+      example: user-1001
+
+  schemas:
+
+    IncomeVerificationResult:
+      type: object
+      description: |
+        The computed income assessment for one worker. This same shape is
+        published to the `income.verified` Kafka topic (with a `verifiedAt`
+        field in place of `lastUpdated`) and consumed by the Decision Service
+        and the Credit Profile Service.
+      properties:
+        userId:
+          type: string
+          example: user-1001
+        averageMonthlyIncome:
+          type: number
+          format: double
+          description: |
+            Mean of the monthly-equivalent net pay across the events
+            considered, in USD.
+          example: 5306.70
+        incomeConfidenceScore:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 1
+          description: |
+            `1 − coefficient of variation`, clamped to `[0, 1]`. Higher values
+            indicate more predictable earnings. This is the signal the
+            eligibility rules engine keys on.
+          example: 1.0
+        incomeStabilityLabel:
+          $ref: '#/components/schemas/IncomeStabilityLabel'
+        payEventsConsidered:
+          type: integer
+          minimum: 0
+          description: |
+            Number of pay events included in this calculation, capped at 12
+            by the rolling window.
+          example: 4
+        lastUpdated:
+          type: string
+          format: date-time
+          description: When this assessment was last recomputed (UTC).
+          example: "2026-07-13T23:03:58.387384Z"
+
+    IncomeStabilityLabel:
+      type: string
+      description: |
+        Categorical summary of the confidence score, applied as follows:
+
+        | Label | Condition |
+        |---|---|
+        | `STABLE` | score ≥ 0.85 |
+        | `MODERATE` | score ≥ 0.60 |
+        | `VOLATILE` | score < 0.60 |
+        | `INSUFFICIENT_DATA` | fewer than 2 pay events on record |
+      enum:
+        - STABLE
+        - MODERATE
+        - VOLATILE
+        - INSUFFICIENT_DATA
+      example: STABLE
+
+    Health:
+      type: object
+      properties:
+        service:
+          type: string
+          example: income-verification-service
+        status:
+          type: string
+          enum: [UP, DOWN]
+          example: UP
+
+    NotFound:
+      type: object
+      properties:
+        message:
+          type: string
+          example: No income verification result yet for userId=user-1001
+        error:
+          type: string
+          example: not_found
