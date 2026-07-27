@@ -1,100 +1,100 @@
 {
   "bsonType": "object",
   "title": "credit_profiles",
-  "description": "Aggregate credit profile combining payroll income signals with credit bureau data. One document per worker, keyed by userId.",
+  "description": "Aggregate credit profile combining payroll income signals with credit bureau data. One document per worker, keyed by userId. NOTE: field names here are PascalCase because the MongoDB .NET driver serialises POCO properties using their C# names. The REST API exposes the same data in camelCase, because ASP.NET Core's System.Text.Json converts on output. This schema describes the STORED shape; see docs/api/credit-profile-service.openapi.yaml for the API shape.",
   "required": [
     "_id",
-    "averageMonthlyIncome",
-    "incomeConfidenceScore",
-    "incomeStabilityLabel",
-    "payEventsConsidered",
-    "thinFileClassification",
-    "lastUpdated",
-    "createdAt"
+    "AverageMonthlyIncome",
+    "IncomeConfidenceScore",
+    "IncomeStabilityLabel",
+    "PayEventsConsidered",
+    "ThinFileClassification",
+    "LastUpdated",
+    "CreatedAt"
   ],
   "properties": {
     "_id": {
       "bsonType": "string",
       "maxLength": 128,
-      "description": "Worker identifier used directly as the document key. Gives idempotent upserts by worker with no secondary index, and keeps the document addressable by the same key used across the platform."
+      "description": "Worker identifier used directly as the document key. Gives idempotent upserts by worker with no secondary index, and keeps the document addressable by the same key used across the platform. Exposed as userId by the API."
     },
-    "averageMonthlyIncome": {
-      "bsonType": ["double", "int"],
+    "AverageMonthlyIncome": {
+      "bsonType": ["double", "int", "long"],
       "minimum": 0,
       "description": "Mean monthly-equivalent net pay in USD, as computed by income-verification-service."
     },
-    "incomeConfidenceScore": {
+    "IncomeConfidenceScore": {
       "bsonType": ["double", "int"],
       "minimum": 0,
       "maximum": 1,
-      "description": "clamp(1 - stddev/mean, 0, 1) over the pay window. Measures predictability rather than magnitude."
+      "description": "clamp(1 - stddev/mean, 0, 1) over the pay window. Measures predictability rather than magnitude. Stored as int when the value is exactly 0 or 1."
     },
-    "incomeStabilityLabel": {
+    "IncomeStabilityLabel": {
       "enum": ["STABLE", "MODERATE", "VOLATILE", "INSUFFICIENT_DATA"],
       "description": "Categorical band over the confidence score."
     },
-    "payEventsConsidered": {
-      "bsonType": "int",
+    "PayEventsConsidered": {
+      "bsonType": ["int", "long"],
       "minimum": 0,
       "maximum": 12,
       "description": "Size of the rolling window used, capped at 12."
     },
-    "bureauScore": {
-      "bsonType": ["int", "null"],
+    "BureauScore": {
+      "bsonType": ["int", "long", "null"],
       "minimum": 300,
       "maximum": 850,
       "description": "Conventional credit score, or null where the bureau holds no file. A null value is the defining condition of the thin-file case, not an error state."
     },
-    "bureauSource": {
+    "BureauSource": {
       "bsonType": ["string", "null"],
       "description": "Bureau that responded. Null alongside a null score."
     },
-    "thinFileClassification": {
+    "ThinFileClassification": {
       "enum": ["THIN_FILE", "STANDARD", "RICH_FILE"],
       "description": "THIN_FILE when the bureau returned no history; RICH_FILE at score 720 or above with STABLE income; STANDARD otherwise."
     },
-    "incomeHistory": {
+    "IncomeHistory": {
       "bsonType": "array",
-      "description": "Append-only sequence of income assessment snapshots, showing how confidence strengthened as pay history accumulated. Currently unbounded; see the known gaps section of the data model document.",
+      "description": "Append-only sequence of income assessment snapshots, showing how confidence strengthened as pay history accumulated. Currently unbounded; a sample document inspected on 2026-07-26 already held 23 entries. See the known gaps section of the data model document.",
       "items": {
         "bsonType": "object",
         "required": [
-          "averageMonthlyIncome",
-          "incomeConfidenceScore",
-          "incomeStabilityLabel",
-          "payEventsConsidered",
-          "observedAt"
+          "AverageMonthlyIncome",
+          "IncomeConfidenceScore",
+          "IncomeStabilityLabel",
+          "PayEventsConsidered",
+          "ObservedAt"
         ],
         "properties": {
-          "averageMonthlyIncome": {
-            "bsonType": ["double", "int"],
+          "AverageMonthlyIncome": {
+            "bsonType": ["double", "int", "long"],
             "minimum": 0
           },
-          "incomeConfidenceScore": {
+          "IncomeConfidenceScore": {
             "bsonType": ["double", "int"],
             "minimum": 0,
             "maximum": 1
           },
-          "incomeStabilityLabel": {
+          "IncomeStabilityLabel": {
             "enum": ["STABLE", "MODERATE", "VOLATILE", "INSUFFICIENT_DATA"]
           },
-          "payEventsConsidered": {
-            "bsonType": "int",
+          "PayEventsConsidered": {
+            "bsonType": ["int", "long"],
             "minimum": 0
           },
-          "observedAt": {
-            "bsonType": ["date", "string"],
+          "ObservedAt": {
+            "bsonType": "date",
             "description": "When this snapshot was taken."
           }
         }
       }
     },
-    "lastUpdated": {
-      "bsonType": ["date", "string"],
+    "LastUpdated": {
+      "bsonType": "date",
       "description": "Last time any field on this document changed."
     },
-    "createdAt": {
-      "bsonType": ["date", "string"],
+    "CreatedAt": {
+      "bsonType": "date",
       "description": "When this profile was first created."
     }
   }

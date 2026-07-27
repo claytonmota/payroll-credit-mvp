@@ -99,17 +99,26 @@ docker compose exec -T mongo mongosh creditprofile --quiet --eval \
 
 echo ""
 echo "--- inferred field shape from a sample document ---"
+echo "  NOTE: stored field names are PascalCase (MongoDB .NET driver convention)."
+echo "        The REST API exposes the same data in camelCase. Both are correct."
 docker compose exec -T mongo mongosh creditprofile --quiet --eval \
-  'const d = db.credit_profiles.findOne();
+  'function kind(v) {
+     if (v === null || v === undefined) return "null";
+     if (v instanceof Date) return "date";
+     if (Array.isArray(v)) return "array[" + v.length + "]";
+     if (typeof v === "number") return Number.isInteger(v) ? "number (int)" : "number (double)";
+     return typeof v;
+   }
+   const d = db.credit_profiles.findOne();
    if (!d) { print("  collection is empty"); }
    else {
-     Object.keys(d).forEach(k => {
-       const v = d[k];
-       const t = Array.isArray(v) ? "array[" + v.length + "]"
-               : v === null ? "null"
-               : typeof v;
-       print("  " + k.padEnd(28) + t);
-     });
+     Object.keys(d).forEach(k => print("  " + k.padEnd(28) + kind(d[k])));
+     const arr = d.IncomeHistory || d.incomeHistory;
+     if (Array.isArray(arr) && arr.length) {
+       print("");
+       print("  IncomeHistory[0] element shape:");
+       Object.keys(arr[0]).forEach(k => print("    " + k.padEnd(26) + kind(arr[0][k])));
+     }
    }'
 
 echo ""
