@@ -22,7 +22,7 @@ CREATE TABLE payroll_event_record (
     id                BIGSERIAL         PRIMARY KEY,
 
     -- Worker identifier supplied by the calling system. Pseudonymous.
-    user_id           VARCHAR(128)      NOT NULL,
+    user_id           VARCHAR(255)      NOT NULL,
 
     employer_name     VARCHAR(255),
 
@@ -39,10 +39,10 @@ CREATE TABLE payroll_event_record (
     -- WEEKLY | BIWEEKLY | SEMIMONTHLY | MONTHLY
     -- Determines the multiplier used to normalise net_pay to a monthly
     -- equivalent: 4.33, 2.166, 2.0, 1.0 respectively.
-    pay_frequency     VARCHAR(32),
+    pay_frequency     VARCHAR(255),
 
     -- Originating payroll provider, for data lineage attribution.
-    source_provider   VARCHAR(64),
+    source_provider   VARCHAR(255),
 
     -- Server-side ingest time, not a value supplied by the caller.
     received_at       TIMESTAMP         NOT NULL
@@ -61,7 +61,7 @@ CREATE TABLE payroll_event_record (
 -- it themselves rather than referencing this row later.
 -- -----------------------------------------------------------------------------
 CREATE TABLE income_verification_result (
-    user_id                  VARCHAR(128)      PRIMARY KEY,
+    user_id                  VARCHAR(255)      PRIMARY KEY,
 
     -- Mean of the monthly-equivalent net pay across the window. Not a sum,
     -- and not annualised.
@@ -74,7 +74,7 @@ CREATE TABLE income_verification_result (
     -- STABLE | MODERATE | VOLATILE | INSUFFICIENT_DATA
     -- Categorical band over the score, so consumers branch on a stable enum
     -- rather than hard-coding thresholds that may be retuned.
-    income_stability_label   VARCHAR(32)       NOT NULL,
+    income_stability_label   VARCHAR(255)       NOT NULL,
 
     -- Window size actually used, capped at 12.
     pay_events_considered    INTEGER           NOT NULL,
