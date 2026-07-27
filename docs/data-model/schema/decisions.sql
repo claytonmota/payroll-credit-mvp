@@ -40,7 +40,7 @@ CREATE TABLE eligibility_decision (
     decision_id              VARCHAR(64)       PRIMARY KEY,
 
     -- Worker identifier. NOT unique — see the note above.
-    user_id                  VARCHAR(128)      NOT NULL,
+    user_id                  VARCHAR(255)      NOT NULL,
 
     -- APPROVED | REVIEW | DENIED
     -- REVIEW is a referral to a human underwriter, not a soft denial.
@@ -57,7 +57,7 @@ CREATE TABLE eligibility_decision (
     -- Input signals, snapshotted at decision time. See note above.
     average_monthly_income   DOUBLE PRECISION  NOT NULL,
     income_confidence_score  DOUBLE PRECISION  NOT NULL,
-    income_stability_label   VARCHAR(32)       NOT NULL,
+    income_stability_label   VARCHAR(255)       NOT NULL,
 
     -- Plain-language statement of which rules fired and why. Written for the
     -- affected consumer rather than for an engineer: this is the raw material
