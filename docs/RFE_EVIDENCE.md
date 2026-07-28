@@ -78,7 +78,7 @@ its normalized form persisted across two databases and two languages.
 
 **Verifiable:** the same JSON event flows from a Java producer into a C#
 consumer without a shared library, proving the language-agnostic
-contract discipline. See [ADR-001](#adr-001-producers-do-not-emit-kafka-type-headers).
+contract discipline. See [ADR-0001](adr/0001-kafka-producers-omit-type-headers.md).
 
 ### 2.3 Methodology 3 — Advanced Data Governance & Financial Compliance
 
@@ -166,12 +166,29 @@ The following are objective indicators, verifiable directly in the repo:
   classification conditions. They are executable contracts rather than
   documentation: a consuming institution could generate a client library and
   integrate without reading the source.
-- **Architecture Decision Records:** documented in this file (see §7)
+- **Data model reference:** [`docs/data-model/`](data-model/) — entity
+  relationship diagrams, explicit DDL for both PostgreSQL databases, a MongoDB
+  schema validator, a field-level data dictionary, a lineage trace following one
+  value through the pipeline, and classification of each field against GLBA,
+  FCRA and Regulation B. The DDL was verified against the running deployment on
+  2026-07-26 and corrected where it diverged; the verification is recorded in
+  the document, and `schema/verify-schema.sh` reproduces it.
+- **Processing flow diagrams:** [`docs/diagrams/`](diagrams/) — five flows
+  covering end-to-end processing, thin-file classification, cross-language event
+  fan-out, assessment evolution with the append-only audit trail, and deployment
+  topology. Written in Mermaid rather than exported from a drawing tool, so they
+  are plain text, reviewable in a diff, and cannot fall silently out of step
+  with the implementation.
+- **Architecture Decision Records:** four records in [`docs/adr/`](adr/) —
+  Kafka type headers, deterministic rules over machine learning, denormalised
+  audit inputs, and polyglot persistence. Each states the trade-off accepted,
+  not only the benefit obtained (see §7)
 - **System architecture documentation:** [`docs/System_Architecture_Document.pdf`](System_Architecture_Document.pdf)
   — a formal 27-page engineering document covering system context,
   architectural principles, per-service specification, data model, API
-  reference, technology selection rationale, architecture decision records,
-  non-functional characteristics, and known gaps.
+  reference, technology selection rationale, non-functional characteristics,
+  and known gaps. It summarises the architecture decision records rather than
+  restating them, so that it cannot drift out of step with `docs/adr/`.
 
 ## 6. Prior work referenced in the Professional Plan
 
@@ -191,26 +208,51 @@ scalable by Kafka consumer groups and stateless microservices.
 
 ## 7. Architecture Decision Records
 
-### ADR-001: Producers do not emit Kafka type headers
+Significant design choices are recorded as Architecture Decision Records in
+[`docs/adr/`](adr/), one Markdown file per decision, following the structure
+proposed by Michael Nygard: status, context, decision, consequences.
 
-**Context:** Java Spring Kafka's `JsonSerializer` emits a `__TypeId__`
-header on every message, referencing the producer's internal Java class
-name. Consumers with `JsonDeserializer` then require that class to be
-in a trust list.
+They exist because the reasoning behind a decision decays faster than the code
+implementing it. The code shows what was done; only a record shows why, and
+what was given up.
 
-**Decision:** All Kafka producers in this project set
-`ADD_TYPE_INFO_HEADERS = false`. Each consumer owns its own DTO in its
-own package (`com.mota.<service>.model.*`). The event **schema** is the
-contract, not the Java class name.
+| Record | Decision | Principal trade-off accepted |
+|---|---|---|
+| [ADR-0001](adr/0001-kafka-producers-omit-type-headers.md) | Kafka producers omit type headers | Consumers must know their target type at compile time; no automatic type resolution from the message |
+| [ADR-0002](adr/0002-deterministic-rules-engine-over-machine-learning.md) | Deterministic rules engine over machine learning | Predictive accuracy is almost certainly lower than a trained model would achieve, and the size of that gap is unknown |
+| [ADR-0003](adr/0003-input-signals-denormalised-into-audit-record.md) | Input signals denormalised into the audit record | The same value is stored in several places, and deletion under CCPA becomes difficult against an append-only table |
+| [ADR-0004](adr/0004-polyglot-persistence.md) | Polyglot persistence — PostgreSQL and MongoDB | No referential integrity across the stores, larger operational surface, and a contributor must know both |
 
-**Consequence:** Services remain independently deployable across
-languages (Java Spring Boot ↔ C# .NET) and across teams. A future
-service written in Python, Go, or Rust can consume the same topics with
-no interop concerns. Trade-off: consumers must know the target type at
-compile time; there is no auto-mapping via headers.
+Two of these bear directly on the regulatory claims made in §2.3 and §3, and
+are the ones worth reading in full.
 
-**Reference:** [`ingestion-service/.../KafkaProducerConfig.java`](../ingestion-service/src/main/java/com/mota/ingestion/config/KafkaProducerConfig.java),
-[`income-verification-service/.../KafkaConfig.java`](../income-verification-service/src/main/java/com/mota/incomeverification/config/KafkaConfig.java)
+**[ADR-0002](adr/0002-deterministic-rules-engine-over-machine-learning.md)**
+records a decision taken *against* the prevailing empirical evidence.
+FinRegLab's 2025 study *Advancing the Credit Ecosystem: Machine Learning &
+Cash Flow Data in Consumer Underwriting* found that combining machine learning
+with cash-flow data produced the largest gains in predictiveness — and
+expanded credit access without increasing lender default risk. This platform
+nonetheless uses a deterministic rules engine, because Regulation B requires a
+specific principal reason on adverse action, Basel II requires reproducibility,
+and there is no historical loan performance data available to train a model on.
+
+The record states plainly that the accuracy cost of that choice is unknown, and
+that if a trained model would approve creditworthy applicants these rules
+decline, the cost falls on precisely the population the endeavor exists to
+serve. It is defensible for a prototype without performance data; it would
+require re-examination against measured outcomes before production. That
+transparency is the point: a record listing only benefits would be marketing
+rather than engineering.
+
+**[ADR-0003](adr/0003-input-signals-denormalised-into-audit-record.md)**
+explains why the eligibility audit record stores copies of its own input
+signals rather than referencing them. Those values also live in a table holding
+one mutable row per worker, overwritten on every new pay event. An audit record
+referencing that table would, months later, reconstruct a past decision using
+today's income figure — and produce a different answer. Freezing the inputs at
+decision time is what makes a decision independently reproducible, which is
+what Basel II model risk management asks for and what Regulation B presumes
+when it obliges a lender to state the reason that actually applied.
 
 ## 8. Timeline of construction
 
