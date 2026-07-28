@@ -171,7 +171,7 @@ components:
         The canonical payroll event contract. This same JSON shape is what
         travels on the `payroll.events` Kafka topic; the topic payload is the
         contract between services, independent of any producing language or
-        class name (see ADR-001 in the System Architecture Document).
+        class name. See `docs/adr/0001-kafka-producers-omit-type-headers.md`.
       required:
         - userId
         - payPeriodStart

@@ -12,9 +12,9 @@ info:
     ### Why rules and not a model
 
     The engine is deterministic and rule-based. It uses no machine learning in
-    the decision path. This is a deliberate architectural decision (ADR-002 in
-    the System Architecture Document), taken to satisfy two regulatory
-    constraints:
+    the decision path. This is a deliberate architectural decision, recorded in full at
+    `docs/adr/0002-deterministic-rules-engine-over-machine-learning.md`, taken
+    to satisfy two regulatory constraints:
 
     - **CFPB adverse action reporting** under Regulation B requires that a
       consumer denied credit receive a specific principal reason. Every

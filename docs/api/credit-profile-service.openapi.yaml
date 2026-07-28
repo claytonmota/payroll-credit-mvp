@@ -18,8 +18,9 @@ info:
     between them.
 
     That interoperability is not incidental — it is the practical consequence
-    of ADR-001, which requires every producer to omit language-specific type
-    headers so that the event schema alone constitutes the contract. A future
+    of `docs/adr/0001-kafka-producers-omit-type-headers.md`, which requires every
+    producer to omit language-specific type headers so that the event schema
+    alone constitutes the contract. A future
     service in Python, Go, or Rust could join the same topics unchanged.
 
     ### Financial inclusion
