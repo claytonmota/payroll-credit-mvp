@@ -9,8 +9,9 @@ alongside the code and cannot silently drift out of date the way an exported
 PNG can.
 
 They complement rather than replace the architecture overview in
-`docs/architecture-v4.png`: that diagram shows *what the system is made of*,
-while these show *what happens over time* when it runs.
+[`architecture-v5.svg`](architecture-v5.svg): that diagram shows *what the system
+is made of* — and marks which parts exist today — while these show *what happens
+over time* when it runs.
 
 | # | Diagram | Question it answers |
 |---|---|---|
@@ -293,7 +294,7 @@ flowchart TB
     consumer["API consumer<br/>browser, curl, Postman"]
 
     subgraph aws["AWS EC2 m7i-flex.large, 2 vCPU / 8 GB, us-east-1, Elastic IP 3.229.114.98"]
-        nginx["nginx<br/>TLS termination, subdomain routing"]
+        caddy["Caddy<br/>TLS termination, subdomain routing"]
 
         subgraph services["Application containers"]
             ing["ingestion-service<br/>Java, :8081"]
@@ -302,18 +303,18 @@ flowchart TB
             prof["credit-profile-service<br/>C# .NET 8, :8084"]
         end
 
-        subgraph infra["Infrastructure containers, not publicly exposed"]
+        subgraph infra["Infrastructure containers, not internet-reachable"]
             kafka["Kafka + ZooKeeper"]
             pg[("PostgreSQL<br/>incomeverification, decisions")]
             mongo[("MongoDB<br/>creditprofile")]
         end
     end
 
-    consumer -->|HTTPS| nginx
-    nginx --> ing
-    nginx --> inc
-    nginx --> dec
-    nginx --> prof
+    consumer -->|HTTPS| caddy
+    caddy --> ing
+    caddy --> inc
+    caddy --> dec
+    caddy --> prof
 
     ing -->|produce payroll.events| kafka
     kafka -->|consume payroll.events| inc
@@ -326,8 +327,8 @@ flowchart TB
     prof --> mongo
 ```
 
-Four subdomains resolve to the same Elastic IP and are separated by nginx
-virtual host:
+Four subdomains resolve to the same Elastic IP and are separated by Caddy
+site blocks:
 
 | Subdomain | Container port |
 |---|---|
@@ -336,8 +337,17 @@ virtual host:
 | `decision.payroll-credit.com` | 8083 |
 | `creditprofile.payroll-credit.com` | 8084 |
 
-Kafka, ZooKeeper, PostgreSQL and MongoDB have no published ports on the
-security group. They are reachable only from within the Docker network.
+Caddy is the only container publishing ports to the internet, and it publishes
+only 80 and 443. The apex domain `payroll-credit.com` returns a plain-text
+index of the four services.
+
+Kafka, ZooKeeper, PostgreSQL and MongoDB do publish ports on the host
+interface, but the AWS Security Group restricts them to the operator's own
+address, so they are not internet-reachable. Note that this makes the
+Security Group the sole control; binding those publications to `127.0.0.1`
+would add a second independent barrier, and would cost nothing, since every
+service reaches its database by Docker service name rather than through the
+host.
 
 The scaling path out of this topology — partition count, managed data
 services, replica counts — is set out in section 11 of the System Architecture

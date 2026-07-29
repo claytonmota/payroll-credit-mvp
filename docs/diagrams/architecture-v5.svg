@@ -1,0 +1,324 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1720 1210" width="1720" height="1210">
+<rect width="1720" height="1210" fill="#ffffff"/>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#212529"/></marker>
+<marker id="arrowg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#adb5bd"/></marker>
+</defs>
+<text x="860.0" y="34" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="20" fill="#1f3a68" font-weight="bold" text-anchor="middle" opacity="1.0" >PAYROLL-INTEGRATED REAL-TIME CREDIT INFRASTRUCTURE</text>
+<text x="860.0" y="54" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11.5" fill="#868e96" font-weight="normal" text-anchor="middle" opacity="1.0" >Target architecture, with the current implementation shown against it</text>
+<line x1="530.0" y1="64" x2="1190.0" y2="64" stroke="#1f3a68" stroke-width="1.2"/>
+<rect x="1418" y="78" width="272" height="106" rx="7" fill="#f8f9fa" stroke="#1f3a68" stroke-width="1.3" opacity="1.0"/>
+<text x="1430" y="97" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#1f3a68" font-weight="bold" text-anchor="start" opacity="1.0" >LEGEND</text>
+<rect x="1430" y="106" width="15" height="12" rx="3" fill="#ffffff" stroke="#1971c2" stroke-width="1.5" opacity="1.0"/>
+<rect x="1430" y="106" width="3" height="12" rx="1.4" fill="#1971c2"/>
+<text x="1452" y="116" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >Implemented and running in production</text>
+<rect x="1430" y="124" width="15" height="12" rx="3" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="1452" y="134" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Planned — see docs/ROADMAP.md</text>
+<line x1="1430" y1="148" x2="1445" y2="148" stroke="#212529" stroke-width="1.5" marker-end="url(#arrow)"/>
+<text x="1452" y="151" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >Synchronous / HTTP</text>
+<line x1="1430" y1="165" x2="1445" y2="165" stroke="#212529" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+<text x="1452" y="168" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >Asynchronous / Kafka event</text>
+<rect x="28" y="78" width="236" height="400" rx="9" fill="none" stroke="#1f3a68" stroke-width="1.8" opacity="1.0"/>
+<rect x="28" y="78" width="236" height="26" rx="9" fill="#1f3a68"/>
+<rect x="28" y="94" width="236" height="10" fill="#1f3a68"/>
+<text x="39" y="96" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#ffffff" font-weight="bold" text-anchor="start" opacity="1.0" >1.  DATA SOURCES</text>
+<rect x="40" y="116" width="212" height="56" rx="5" fill="#ffffff" stroke="#1971c2" stroke-width="1.5" opacity="1.0"/>
+<rect x="40" y="116" width="3.5" height="56" rx="1.6" fill="#1971c2"/>
+<text x="50" y="131" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#1971c2" font-weight="bold" text-anchor="start" opacity="1.0" >PAYROLL PROVIDERS</text>
+<text x="50" y="145" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >ADP · Workday · Paychex</text>
+<text x="50" y="156.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >Gusto · Rippling</text>
+<rect x="180" y="121" width="66" height="13" rx="6.5" fill="#1971c2" opacity="0.13"/>
+<text x="213.0" y="130.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="7.6" fill="#1971c2" font-weight="bold" text-anchor="middle" opacity="1.0" >CONTRACT</text>
+<rect x="40" y="180" width="212" height="50" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="50" y="195" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >EMPLOYERS / HR SYSTEMS</text>
+<text x="50" y="209" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >REST · SOAP · SFTP · Webhooks</text>
+<rect x="40" y="238" width="212" height="50" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="50" y="253" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >OPEN BANKING</text>
+<text x="50" y="267" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Plaid · MX</text>
+<rect x="40" y="296" width="212" height="56" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="50" y="311" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >CREDIT BUREAUS</text>
+<text x="50" y="325" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Experian · Equifax</text>
+<text x="50" y="336.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >TransUnion · FICO</text>
+<rect x="208" y="301" width="38" height="13" rx="6.5" fill="#1971c2" opacity="0.13"/>
+<text x="227.0" y="310.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="7.6" fill="#1971c2" font-weight="bold" text-anchor="middle" opacity="1.0" >STUB</text>
+<rect x="40" y="360" width="212" height="62" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="50" y="375" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >THIRD-PARTY DATA</text>
+<text x="50" y="389" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Fraud · device intelligence</text>
+<text x="50" y="400.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >identity · AML / KYC</text>
+<text x="40" y="442" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Only the payroll event contract is</text>
+<text x="40" y="453" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >implemented. The bureau lookup is a</text>
+<text x="40" y="464" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >deterministic in-process stub.</text>
+<rect x="280" y="78" width="190" height="400" rx="9" fill="none" stroke="#6741d9" stroke-width="1.8" opacity="1.0"/>
+<rect x="280" y="78" width="190" height="26" rx="9" fill="#6741d9"/>
+<rect x="280" y="94" width="190" height="10" fill="#6741d9"/>
+<text x="291" y="96" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#ffffff" font-weight="bold" text-anchor="start" opacity="1.0" >2.  INGESTION</text>
+<rect x="292" y="116" width="166" height="62" rx="5" fill="#ffffff" stroke="#6741d9" stroke-width="1.5" opacity="1.0"/>
+<rect x="292" y="116" width="3.5" height="62" rx="1.6" fill="#6741d9"/>
+<text x="302" y="131" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#6741d9" font-weight="bold" text-anchor="start" opacity="1.0" >REST ENDPOINT</text>
+<text x="302" y="145" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >POST /v1/payroll/events</text>
+<text x="302" y="156.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >Java · Spring Boot 3.2</text>
+<rect x="414" y="121" width="38" height="13" rx="6.5" fill="#6741d9" opacity="0.13"/>
+<text x="433.0" y="130.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="7.6" fill="#6741d9" font-weight="bold" text-anchor="middle" opacity="1.0" >LIVE</text>
+<rect x="292" y="188" width="166" height="46" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="302" y="203" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >CONNECTOR ADAPTERS</text>
+<text x="302" y="217" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Per-provider normalisation</text>
+<rect x="292" y="244" width="166" height="46" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="302" y="259" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >FILE / SFTP PROCESSOR</text>
+<text x="302" y="273" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Batch feeds</text>
+<rect x="292" y="300" width="166" height="46" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="302" y="315" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >WEBHOOK RECEIVER</text>
+<text x="302" y="329" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Push notifications</text>
+<rect x="292" y="356" width="166" height="46" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="302" y="371" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >API GATEWAY</text>
+<text x="302" y="385" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Kong / Apigee</text>
+<rect x="488" y="78" width="480" height="92" rx="9" fill="none" stroke="#6741d9" stroke-width="1.8" opacity="1.0"/>
+<rect x="488" y="78" width="480" height="26" rx="9" fill="#6741d9"/>
+<rect x="488" y="94" width="480" height="10" fill="#6741d9"/>
+<text x="499" y="96" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#ffffff" font-weight="bold" text-anchor="start" opacity="1.0" >3.  EVENT STREAMING</text>
+<rect x="500" y="116" width="210" height="44" rx="5" fill="#ffffff" stroke="#6741d9" stroke-width="1.5" opacity="1.0"/>
+<rect x="500" y="116" width="3.5" height="44" rx="1.6" fill="#6741d9"/>
+<text x="510" y="131" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#6741d9" font-weight="bold" text-anchor="start" opacity="1.0" >APACHE KAFKA</text>
+<text x="510" y="145" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >payroll.events  ·  income.verified</text>
+<rect x="666" y="121" width="38" height="13" rx="6.5" fill="#6741d9" opacity="0.13"/>
+<text x="685.0" y="130.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="7.6" fill="#6741d9" font-weight="bold" text-anchor="middle" opacity="1.0" >LIVE</text>
+<rect x="722" y="116" width="110" height="44" rx="5" fill="#ffffff" stroke="#6741d9" stroke-width="1.5" opacity="1.0"/>
+<rect x="722" y="116" width="3.5" height="44" rx="1.6" fill="#6741d9"/>
+<text x="732" y="131" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#6741d9" font-weight="bold" text-anchor="start" opacity="1.0" >ZOOKEEPER</text>
+<text x="732" y="145" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >Coordination</text>
+<rect x="788" y="121" width="38" height="13" rx="6.5" fill="#6741d9" opacity="0.13"/>
+<text x="807.0" y="130.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="7.6" fill="#6741d9" font-weight="bold" text-anchor="middle" opacity="1.0" >LIVE</text>
+<rect x="844" y="116" width="112" height="44" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="854" y="131" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >SCHEMA REGISTRY</text>
+<text x="854" y="145" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Avro / JSON</text>
+<rect x="488" y="186" width="480" height="292" rx="9" fill="none" stroke="#1971c2" stroke-width="1.8" opacity="1.0"/>
+<rect x="488" y="186" width="480" height="26" rx="9" fill="#1971c2"/>
+<rect x="488" y="202" width="480" height="10" fill="#1971c2"/>
+<text x="499" y="204" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#ffffff" font-weight="bold" text-anchor="start" opacity="1.0" >4.  MICROSERVICES</text>
+<rect x="500" y="224" width="222" height="74" rx="5" fill="#ffffff" stroke="#1971c2" stroke-width="1.5" opacity="1.0"/>
+<rect x="500" y="224" width="3.5" height="74" rx="1.6" fill="#1971c2"/>
+<text x="510" y="239" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#1971c2" font-weight="bold" text-anchor="start" opacity="1.0" >income-verification-service</text>
+<text x="510" y="253" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >Confidence score from coefficient</text>
+<text x="510" y="264.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >of variation, 12-event window</text>
+<text x="510" y="276.0" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >Java · PostgreSQL</text>
+<rect x="678" y="229" width="38" height="13" rx="6.5" fill="#1971c2" opacity="0.13"/>
+<text x="697.0" y="238.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="7.6" fill="#1971c2" font-weight="bold" text-anchor="middle" opacity="1.0" >LIVE</text>
+<rect x="734" y="224" width="222" height="74" rx="5" fill="#ffffff" stroke="#1971c2" stroke-width="1.5" opacity="1.0"/>
+<rect x="734" y="224" width="3.5" height="74" rx="1.6" fill="#1971c2"/>
+<text x="744" y="239" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#1971c2" font-weight="bold" text-anchor="start" opacity="1.0" >decision-service</text>
+<text x="744" y="253" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >Deterministic rules engine</text>
+<text x="744" y="264.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >Human-readable reasoning</text>
+<text x="744" y="276.0" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >Java · PostgreSQL</text>
+<rect x="912" y="229" width="38" height="13" rx="6.5" fill="#1971c2" opacity="0.13"/>
+<text x="931.0" y="238.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="7.6" fill="#1971c2" font-weight="bold" text-anchor="middle" opacity="1.0" >LIVE</text>
+<rect x="500" y="308" width="222" height="74" rx="5" fill="#ffffff" stroke="#1971c2" stroke-width="1.5" opacity="1.0"/>
+<rect x="500" y="308" width="3.5" height="74" rx="1.6" fill="#1971c2"/>
+<text x="510" y="323" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#1971c2" font-weight="bold" text-anchor="start" opacity="1.0" >credit-profile-service</text>
+<text x="510" y="337" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >Thin-file classification</text>
+<text x="510" y="348.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >Bureau aggregation (stub)</text>
+<text x="510" y="360.0" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >C# .NET 8 · MongoDB</text>
+<rect x="678" y="313" width="38" height="13" rx="6.5" fill="#1971c2" opacity="0.13"/>
+<text x="697.0" y="322.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="7.6" fill="#1971c2" font-weight="bold" text-anchor="middle" opacity="1.0" >LIVE</text>
+<rect x="734" y="308" width="108" height="36" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="744" y="323" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >identity</text>
+<text x="744" y="337" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >OAuth / OIDC</text>
+<rect x="848" y="308" width="108" height="36" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="858" y="323" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >employment</text>
+<text x="858" y="337" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Tenure</text>
+<rect x="734" y="350" width="108" height="32" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="744" y="365" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >affordability</text>
+<text x="744" y="379" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >DTI</text>
+<rect x="848" y="350" width="108" height="32" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="858" y="365" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >aggregation</text>
+<text x="858" y="379" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Cash flow</text>
+<rect x="500" y="392" width="222" height="32" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="510" y="407" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >notification</text>
+<text x="510" y="421" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Email · SMS · push</text>
+<rect x="734" y="392" width="222" height="32" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="744" y="407" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >audit export</text>
+<text x="744" y="421" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Warehouse feed</text>
+<rect x="500" y="432" width="456" height="34" rx="5" fill="#fff5f5" stroke="#c92a2a" stroke-width="1.2" opacity="1.0"/>
+<text x="512" y="447" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9" fill="#c92a2a" font-weight="bold" text-anchor="start" opacity="1.0" >No machine learning in the decision path.</text>
+<text x="512" y="459" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.2" fill="#c92a2a" font-weight="normal" text-anchor="start" opacity="1.0" >Deliberate — see docs/adr/0002-deterministic-rules-engine-over-machine-learning.md</text>
+<rect x="986" y="186" width="168" height="200" rx="9" fill="none" stroke="#6741d9" stroke-width="1.8" opacity="1.0"/>
+<rect x="986" y="186" width="168" height="26" rx="9" fill="#6741d9"/>
+<rect x="986" y="202" width="168" height="10" fill="#6741d9"/>
+<text x="997" y="204" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#ffffff" font-weight="bold" text-anchor="start" opacity="1.0" >5.  EDGE</text>
+<rect x="996" y="224" width="148" height="62" rx="5" fill="#ffffff" stroke="#6741d9" stroke-width="1.5" opacity="1.0"/>
+<rect x="996" y="224" width="3.5" height="62" rx="1.6" fill="#6741d9"/>
+<text x="1006" y="239" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#6741d9" font-weight="bold" text-anchor="start" opacity="1.0" >Caddy</text>
+<text x="1006" y="253" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >TLS termination</text>
+<text x="1006" y="264.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >Subdomain routing</text>
+<text x="1006" y="276.0" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >Automatic HTTPS</text>
+<rect x="1100" y="229" width="38" height="13" rx="6.5" fill="#6741d9" opacity="0.13"/>
+<text x="1119.0" y="238.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="7.6" fill="#6741d9" font-weight="bold" text-anchor="middle" opacity="1.0" >LIVE</text>
+<rect x="996" y="296" width="148" height="78" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="1006" y="311" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >API GATEWAY</text>
+<text x="1006" y="325" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Rate limiting</text>
+<text x="1006" y="336.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Authentication</text>
+<text x="1006" y="348.0" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Throttling</text>
+<text x="1006" y="359.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Monitoring</text>
+<rect x="1172" y="186" width="236" height="200" rx="9" fill="none" stroke="#2f9e44" stroke-width="1.8" opacity="1.0"/>
+<rect x="1172" y="186" width="236" height="26" rx="9" fill="#2f9e44"/>
+<rect x="1172" y="202" width="236" height="10" fill="#2f9e44"/>
+<text x="1183" y="204" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#ffffff" font-weight="bold" text-anchor="start" opacity="1.0" >6.  CONSUMERS</text>
+<rect x="1184" y="224" width="212" height="46" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="1194" y="239" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >LENDERS / BANKS</text>
+<text x="1194" y="253" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Credit unions · regional banks</text>
+<rect x="1184" y="278" width="212" height="46" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="1194" y="293" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >FINTECHS</text>
+<text x="1194" y="307" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Personal loans · BNPL · EWA</text>
+<rect x="1184" y="332" width="212" height="42" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="1194" y="347" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >INTERNAL TOOLS</text>
+<text x="1194" y="361" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Underwriter portal · dashboards</text>
+<rect x="1172" y="398" width="236" height="80" rx="7" fill="#ebfbee" stroke="#2f9e44" stroke-width="1.4" opacity="1.0"/>
+<text x="1184" y="416" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9.5" fill="#2f9e44" font-weight="bold" text-anchor="start" opacity="1.0" >LIVE PUBLIC ENDPOINTS</text>
+<text x="1184" y="430.0" font-family="Consolas, Menlo, monospace" font-size="7.6" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >payroll-credit.com  (service index)</text>
+<text x="1184" y="440.5" font-family="Consolas, Menlo, monospace" font-size="7.6" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >ingestion.payroll-credit.com</text>
+<text x="1184" y="451.0" font-family="Consolas, Menlo, monospace" font-size="7.6" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >income.payroll-credit.com</text>
+<text x="1184" y="461.5" font-family="Consolas, Menlo, monospace" font-size="7.6" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >decision.payroll-credit.com</text>
+<text x="1184" y="472.0" font-family="Consolas, Menlo, monospace" font-size="7.6" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >creditprofile.payroll-credit.com</text>
+<rect x="280" y="500" width="1128" height="116" rx="9" fill="none" stroke="#e8590c" stroke-width="1.8" opacity="1.0"/>
+<rect x="280" y="500" width="1128" height="26" rx="9" fill="#e8590c"/>
+<rect x="280" y="516" width="1128" height="10" fill="#e8590c"/>
+<text x="291" y="518" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#ffffff" font-weight="bold" text-anchor="start" opacity="1.0" >7.  DATA LAYER</text>
+<rect x="292" y="538" width="210" height="66" rx="5" fill="#ffffff" stroke="#e8590c" stroke-width="1.5" opacity="1.0"/>
+<rect x="292" y="538" width="3.5" height="66" rx="1.6" fill="#e8590c"/>
+<text x="302" y="553" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#e8590c" font-weight="bold" text-anchor="start" opacity="1.0" >PostgreSQL 16</text>
+<text x="302" y="567" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >incomeverification</text>
+<text x="302" y="578.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >decisions (append-only audit)</text>
+<rect x="458" y="543" width="38" height="13" rx="6.5" fill="#e8590c" opacity="0.13"/>
+<text x="477.0" y="552.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="7.6" fill="#e8590c" font-weight="bold" text-anchor="middle" opacity="1.0" >LIVE</text>
+<rect x="514" y="538" width="210" height="66" rx="5" fill="#ffffff" stroke="#e8590c" stroke-width="1.5" opacity="1.0"/>
+<rect x="514" y="538" width="3.5" height="66" rx="1.6" fill="#e8590c"/>
+<text x="524" y="553" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#e8590c" font-weight="bold" text-anchor="start" opacity="1.0" >MongoDB 7</text>
+<text x="524" y="567" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >creditprofile</text>
+<text x="524" y="578.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >Aggregate documents</text>
+<rect x="680" y="543" width="38" height="13" rx="6.5" fill="#e8590c" opacity="0.13"/>
+<text x="699.0" y="552.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="7.6" fill="#e8590c" font-weight="bold" text-anchor="middle" opacity="1.0" >LIVE</text>
+<rect x="736" y="538" width="154" height="66" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="746" y="553" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >SQL Server</text>
+<text x="746" y="567" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Operational store</text>
+<rect x="902" y="538" width="154" height="66" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="912" y="553" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >DynamoDB</text>
+<text x="912" y="567" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >NoSQL store</text>
+<rect x="1068" y="538" width="154" height="66" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="1078" y="553" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >Snowflake / Redshift</text>
+<text x="1078" y="567" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Warehouse</text>
+<rect x="1234" y="538" width="162" height="66" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="1244" y="553" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >Redis · S3</text>
+<text x="1244" y="567" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Cache · data lake</text>
+<rect x="280" y="632" width="552" height="108" rx="9" fill="none" stroke="#1f3a68" stroke-width="1.8" opacity="1.0"/>
+<rect x="280" y="632" width="552" height="26" rx="9" fill="#1f3a68"/>
+<rect x="280" y="648" width="552" height="10" fill="#1f3a68"/>
+<text x="291" y="650" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#ffffff" font-weight="bold" text-anchor="start" opacity="1.0" >8.  CROSS-CUTTING</text>
+<rect x="292" y="670" width="160" height="58" rx="5" fill="#ffffff" stroke="#1f3a68" stroke-width="1.5" opacity="1.0"/>
+<rect x="292" y="670" width="3.5" height="58" rx="1.6" fill="#1f3a68"/>
+<text x="302" y="685" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#1f3a68" font-weight="bold" text-anchor="start" opacity="1.0" >CONFIGURATION</text>
+<text x="302" y="699" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >application.yml</text>
+<text x="302" y="710.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >appsettings.json</text>
+<rect x="408" y="675" width="38" height="13" rx="6.5" fill="#1f3a68" opacity="0.13"/>
+<text x="427.0" y="684.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="7.6" fill="#1f3a68" font-weight="bold" text-anchor="middle" opacity="1.0" >LIVE</text>
+<rect x="464" y="670" width="160" height="58" rx="5" fill="#ffffff" stroke="#1f3a68" stroke-width="1.5" opacity="1.0"/>
+<rect x="464" y="670" width="3.5" height="58" rx="1.6" fill="#1f3a68"/>
+<text x="474" y="685" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#1f3a68" font-weight="bold" text-anchor="start" opacity="1.0" >LOGGING &amp; HEALTH</text>
+<text x="474" y="699" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >SLF4J · Actuator</text>
+<text x="474" y="710.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >/health on all services</text>
+<rect x="580" y="675" width="38" height="13" rx="6.5" fill="#1f3a68" opacity="0.13"/>
+<text x="599.0" y="684.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="7.6" fill="#1f3a68" font-weight="bold" text-anchor="middle" opacity="1.0" >LIVE</text>
+<rect x="636" y="670" width="184" height="58" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="646" y="685" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >OBSERVABILITY STACK</text>
+<text x="646" y="699" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Prometheus · Jaeger · ELK</text>
+<text x="646" y="710.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >CI/CD pipeline</text>
+<rect x="852" y="632" width="556" height="108" rx="9" fill="none" stroke="#c92a2a" stroke-width="1.8" opacity="1.0"/>
+<rect x="852" y="632" width="556" height="26" rx="9" fill="#c92a2a"/>
+<rect x="852" y="648" width="556" height="10" fill="#c92a2a"/>
+<text x="863" y="650" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#ffffff" font-weight="bold" text-anchor="start" opacity="1.0" >9.  SECURITY &amp; COMPLIANCE</text>
+<rect x="864" y="670" width="128" height="58" rx="5" fill="#ffffff" stroke="#c92a2a" stroke-width="1.5" opacity="1.0"/>
+<rect x="864" y="670" width="3.5" height="58" rx="1.6" fill="#c92a2a"/>
+<text x="874" y="685" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#c92a2a" font-weight="bold" text-anchor="start" opacity="1.0" >TRANSPORT</text>
+<text x="874" y="699" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >HTTPS, all endpoints</text>
+<text x="874" y="710.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >Let's Encrypt</text>
+<rect x="948" y="675" width="38" height="13" rx="6.5" fill="#c92a2a" opacity="0.13"/>
+<text x="967.0" y="684.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="7.6" fill="#c92a2a" font-weight="bold" text-anchor="middle" opacity="1.0" >LIVE</text>
+<rect x="1004" y="670" width="128" height="58" rx="5" fill="#ffffff" stroke="#c92a2a" stroke-width="1.5" opacity="1.0"/>
+<rect x="1004" y="670" width="3.5" height="58" rx="1.6" fill="#c92a2a"/>
+<text x="1014" y="685" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#c92a2a" font-weight="bold" text-anchor="start" opacity="1.0" >AUDIT INTEGRITY</text>
+<text x="1014" y="699" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >Append-only decisions</text>
+<text x="1014" y="710.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >Frozen input signals</text>
+<rect x="1088" y="675" width="38" height="13" rx="6.5" fill="#c92a2a" opacity="0.13"/>
+<text x="1107.0" y="684.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="7.6" fill="#c92a2a" font-weight="bold" text-anchor="middle" opacity="1.0" >LIVE</text>
+<rect x="1144" y="670" width="128" height="58" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="1154" y="685" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >ENCRYPTION AT REST</text>
+<text x="1154" y="699" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Volumes · secrets mgr</text>
+<rect x="1284" y="670" width="112" height="58" rx="5" fill="#ffffff" stroke="#adb5bd" stroke-width="1.1" stroke-dasharray="4 3" opacity="1.0"/>
+<text x="1294" y="685" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >IAM / RBAC</text>
+<text x="1294" y="699" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >WAF · DDoS</text>
+<text x="864" y="748" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.2" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Design-time alignment: Basel II model reproducibility · Regulation B adverse action reasoning · CCPA · GLBA · SOC 2 · PCI-DSS</text>
+<rect x="28" y="776" width="1380" height="96" rx="8" fill="#f8f9fa" stroke="#1f3a68" stroke-width="1.4" opacity="1.0"/>
+<text x="44" y="797" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" fill="#1f3a68" font-weight="bold" text-anchor="start" opacity="1.0" >END-TO-END FLOW — what actually runs today</text>
+<rect x="52" y="810" width="168" height="46" rx="5" fill="#ffffff" stroke="#1971c2" stroke-width="1.3" opacity="1.0"/>
+<circle cx="68" cy="826" r="9" fill="#1971c2"/>
+<text x="68" y="829.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle" opacity="1.0" >1</text>
+<text x="83" y="827" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9.2" fill="#212529" font-weight="bold" text-anchor="start" opacity="1.0" >Payroll event</text>
+<text x="83" y="840" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >POST over HTTPS</text>
+<path d="M 223 833 L 236 833" stroke="#212529" stroke-width="1.3" fill="none" marker-end="url(#arrow)"/>
+<rect x="240" y="810" width="168" height="46" rx="5" fill="#ffffff" stroke="#1971c2" stroke-width="1.3" opacity="1.0"/>
+<circle cx="256" cy="826" r="9" fill="#1971c2"/>
+<text x="256" y="829.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle" opacity="1.0" >2</text>
+<text x="271" y="827" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9.2" fill="#212529" font-weight="bold" text-anchor="start" opacity="1.0" >Kafka</text>
+<text x="271" y="840" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >payroll.events</text>
+<path d="M 411 833 L 424 833" stroke="#212529" stroke-width="1.3" fill="none" marker-end="url(#arrow)"/>
+<rect x="428" y="810" width="168" height="46" rx="5" fill="#ffffff" stroke="#1971c2" stroke-width="1.3" opacity="1.0"/>
+<circle cx="444" cy="826" r="9" fill="#1971c2"/>
+<text x="444" y="829.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle" opacity="1.0" >3</text>
+<text x="459" y="827" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9.2" fill="#212529" font-weight="bold" text-anchor="start" opacity="1.0" >Income score</text>
+<text x="459" y="840" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >CV over 12 events</text>
+<path d="M 599 833 L 612 833" stroke="#212529" stroke-width="1.3" fill="none" marker-end="url(#arrow)"/>
+<rect x="616" y="810" width="168" height="46" rx="5" fill="#ffffff" stroke="#1971c2" stroke-width="1.3" opacity="1.0"/>
+<circle cx="632" cy="826" r="9" fill="#1971c2"/>
+<text x="632" y="829.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle" opacity="1.0" >4</text>
+<text x="647" y="827" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9.2" fill="#212529" font-weight="bold" text-anchor="start" opacity="1.0" >Kafka</text>
+<text x="647" y="840" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >income.verified</text>
+<path d="M 787 833 L 800 833" stroke="#212529" stroke-width="1.3" fill="none" marker-end="url(#arrow)"/>
+<rect x="804" y="810" width="168" height="46" rx="5" fill="#ffffff" stroke="#1971c2" stroke-width="1.3" opacity="1.0"/>
+<circle cx="820" cy="826" r="9" fill="#1971c2"/>
+<text x="820" y="829.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle" opacity="1.0" >5</text>
+<text x="835" y="827" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9.2" fill="#212529" font-weight="bold" text-anchor="start" opacity="1.0" >Decision</text>
+<text x="835" y="840" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >rules + reasoning</text>
+<path d="M 975 833 L 988 833" stroke="#212529" stroke-width="1.3" fill="none" marker-end="url(#arrow)"/>
+<rect x="992" y="810" width="168" height="46" rx="5" fill="#ffffff" stroke="#1971c2" stroke-width="1.3" opacity="1.0"/>
+<circle cx="1008" cy="826" r="9" fill="#1971c2"/>
+<text x="1008" y="829.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle" opacity="1.0" >6</text>
+<text x="1023" y="827" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9.2" fill="#212529" font-weight="bold" text-anchor="start" opacity="1.0" >Credit profile</text>
+<text x="1023" y="840" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >C# consumer</text>
+<path d="M 1163 833 L 1176 833" stroke="#212529" stroke-width="1.3" fill="none" marker-end="url(#arrow)"/>
+<rect x="1180" y="810" width="168" height="46" rx="5" fill="#ffffff" stroke="#1971c2" stroke-width="1.3" opacity="1.0"/>
+<circle cx="1196" cy="826" r="9" fill="#1971c2"/>
+<text x="1196" y="829.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle" opacity="1.0" >7</text>
+<text x="1211" y="827" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9.2" fill="#212529" font-weight="bold" text-anchor="start" opacity="1.0" >Persisted</text>
+<text x="1211" y="840" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Postgres + Mongo</text>
+<rect x="28" y="890" width="1380" height="112" rx="8" fill="#fff9db" stroke="#e8590c" stroke-width="1.4" opacity="1.0"/>
+<text x="44" y="912" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" fill="#e8590c" font-weight="bold" text-anchor="start" opacity="1.0" >SCOPE — implemented versus planned</text>
+<text x="44" y="934" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9.6" fill="#212529" font-weight="bold" text-anchor="start" opacity="1.0" >Implemented</text>
+<text x="44" y="950.0" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.6" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >·  Four microservices in two languages, communicating only via Kafka</text>
+<text x="44" y="962.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.6" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >·  PostgreSQL and MongoDB, each owned by the service that writes it</text>
+<text x="44" y="975.0" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.6" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >·  Deployed on AWS EC2, four HTTPS subdomains, publicly reachable</text>
+<text x="44" y="987.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.6" fill="#212529" font-weight="normal" text-anchor="start" opacity="1.0" >·  Unit tested; reproducible from source with docker compose up</text>
+<text x="720" y="934" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9.6" fill="#868e96" font-weight="bold" text-anchor="start" opacity="1.0" >Not yet built</text>
+<text x="720" y="950.0" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.6" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >·  Identity, employment, affordability and aggregation services</text>
+<text x="720" y="962.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.6" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >·  Real HTTP adapter to credit bureaus — currently a deterministic stub</text>
+<text x="720" y="975.0" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.6" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >·  External API gateway, schema registry, warehouse, cache, data lake</text>
+<text x="720" y="987.5" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.6" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >·  Encryption at rest, IAM/RBAC, full observability stack, CI/CD</text>
+<text x="44" y="994" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="8.4" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >These are omissions of scope, not of capability: the same patterns implemented in the four running services extend directly to the remainder.</text>
+<text x="28" y="1184" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9" fill="#868e96" font-weight="normal" text-anchor="start" opacity="1.0" >Clayton Soares da Mota  ·  github.com/claytonmota/payroll-credit-mvp  ·  Apache 2.0</text>
+<text x="1692" y="1184" font-family="Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9" fill="#868e96" font-weight="normal" text-anchor="end" opacity="1.0" >v5  ·  July 2026  ·  see docs/System_Architecture_Document.pdf</text>
+<path d="M 264 150 L 288 150" stroke="#212529" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+<path d="M 458 140 L 496 132" stroke="#212529" stroke-width="1.5" fill="none" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+<path d="M 604 162 L 604 220" stroke="#212529" stroke-width="1.5" fill="none" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+<path d="M 722 250 Q 728 240 734 250" stroke="#212529" stroke-width="1.5" fill="none" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+<path d="M 604 300 L 604 306" stroke="#212529" stroke-width="1.5" fill="none" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+<path d="M 960 250 L 992 250" stroke="#212529" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+<path d="M 1148 250 L 1180 250" stroke="#212529" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+<path d="M 604 428 L 604 534" stroke="#212529" stroke-width="1.2" fill="none" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+<path d="M 840 470 L 840 534" stroke="#212529" stroke-width="1.2" fill="none" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+</svg>
