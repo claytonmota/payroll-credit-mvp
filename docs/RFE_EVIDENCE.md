@@ -166,6 +166,16 @@ The following are objective indicators, verifiable directly in the repo:
   classification conditions. They are executable contracts rather than
   documentation: a consuming institution could generate a client library and
   integrate without reading the source.
+- **Recorded demonstration:** a continuous, unedited screen recording of the
+  full pipeline exercised against the live deployment — health checks across
+  all four public subdomains from a workstation over the public internet, four
+  payroll events submitted, the income confidence score computed, an
+  eligibility decision returned with its reasoning, the thin-file case showing
+  a null bureau score against verified income, and the resulting records read
+  back from PostgreSQL and MongoDB on the host. Single take, no cuts, no
+  post-production: every response shown is a live HTTP response at the time of
+  recording. Held privately and provided to counsel of record — see
+  [`docs/evidence/README.md`](evidence/README.md).
 - **Data model reference:** [`docs/data-model/`](data-model/) — entity
   relationship diagrams, explicit DDL for both PostgreSQL databases, a MongoDB
   schema validator, a field-level data dictionary, a lineage trace following one
