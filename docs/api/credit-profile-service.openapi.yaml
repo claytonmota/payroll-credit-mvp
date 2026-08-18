@@ -18,9 +18,8 @@ info:
     between them.
 
     That interoperability is not incidental — it is the practical consequence
-    of `docs/adr/0001-kafka-producers-omit-type-headers.md`, which requires every
-    producer to omit language-specific type headers so that the event schema
-    alone constitutes the contract. A future
+    of ADR-001, which requires every producer to omit language-specific type
+    headers so that the event schema alone constitutes the contract. A future
     service in Python, Go, or Rust could join the same topics unchanged.
 
     ### Financial inclusion
@@ -28,10 +27,11 @@ info:
     The `THIN_FILE` classification is the point of the platform. A worker with
     payroll-verified, stable income but no credit bureau history is
     identifiable as a distinct population — creditworthy on the evidence
-    available, invisible to conventional underwriting. Roughly 26 million
-    American adults fall into this category according to the Consumer
-    Financial Protection Bureau, with a further 19 million holding unscored
-    files.
+    available, invisible to conventional underwriting. Per the Consumer
+    Financial Protection Bureau's June 2025 technical correction, roughly
+    7 million American adults have no credit record at all and a further
+    25.3 million hold records too thin or stale to score — close to 32 million
+    who cannot be assessed by bureau data alone.
 
     ### Bureau lookup
 

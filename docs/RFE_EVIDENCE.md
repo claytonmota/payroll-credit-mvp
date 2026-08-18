@@ -122,9 +122,19 @@ outcome claimed in the Professional Plan.
 
 ## 4. Financial inclusion — the thin-file case
 
-The endeavor's central social contribution is to serve the 26 million
-Americans classified as "credit invisible" by the CFPB, plus 19 million
-with unscored files (see Professional Plan §6).
+The endeavor's central social contribution is to serve the population the
+CFPB's June 2025 technical correction identifies as unable to be scored:
+approximately 7 million American adults with no credit record at all, and a
+further 25.3 million whose records are too thin or stale to generate a score —
+close to 32 million in total.
+
+That correction is worth noting precisely because it revised the figure this
+petition's Professional Plan cited from the original 2015 report. It also
+sharpened the case rather than weakening it: credit invisibility fell by half
+once a bureau reporting error was fixed, while the unscored population rose
+almost commensurately. The frontier moved from the absence of a file to the
+insufficiency of one — records exist, current reporting activity does not —
+which is exactly what a verified, present-tense income signal supplies.
 
 **Implementation:** [`CreditProfileAggregationService.cs`](../credit-profile-service/src/CreditProfileService/Services/CreditProfileAggregationService.cs)
 
