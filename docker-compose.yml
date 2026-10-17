@@ -2,6 +2,7 @@
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
+    restart: unless-stopped
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -10,6 +11,7 @@ services:
 
   kafka:
     image: confluentinc/cp-kafka:7.5.0
+    restart: unless-stopped
     depends_on:
       - zookeeper
     ports:
@@ -24,6 +26,7 @@ services:
 
   postgres:
     image: postgres:16-alpine
+    restart: unless-stopped
     environment:
       POSTGRES_USER: credit_platform
       POSTGRES_PASSWORD: credit_platform
@@ -35,6 +38,7 @@ services:
 
   ingestion-service:
     build: ./ingestion-service
+    restart: unless-stopped
     depends_on:
       - kafka
     environment:
@@ -44,6 +48,7 @@ services:
 
   income-verification-service:
     build: ./income-verification-service
+    restart: unless-stopped
     depends_on:
       - kafka
       - postgres
@@ -57,6 +62,7 @@ services:
 
   decision-service:
     build: ./decision-service
+    restart: unless-stopped
     depends_on:
       - kafka
       - postgres
@@ -70,11 +76,13 @@ services:
 
   mongo:
     image: mongo:7
+    restart: unless-stopped
     ports:
       - "27017:27017"
 
   credit-profile-service:
     build: ./credit-profile-service
+    restart: unless-stopped
     depends_on:
       - kafka
       - mongo
@@ -90,6 +98,7 @@ services:
 
   caddy:
     image: caddy:2-alpine
+    restart: unless-stopped
     depends_on:
       - ingestion-service
       - income-verification-service
